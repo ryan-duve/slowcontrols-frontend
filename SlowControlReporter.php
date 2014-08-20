@@ -10,36 +10,19 @@
 
 class SlowControlReporter{
 
-  
   protected $nData=0;
   protected $queryResponse=[];
   protected $report=[];
   protected $DBH=null;//database handler
   protected $MAXNDATA=10001;
+  protected $knownDevices=null;
 
-  #declaring multidimensional arrays: http://stackoverflow.com/questions/1811100/how-to-declare-a-two-dimensional-array-most-easily-in-php#1811121
-  protected $knownDevices=array(
-    "evapSi"=>array(
-      "displayName"=>"Evaporator Si",
-      "units"=>"K",
-      "table"=>"lakeshore218s1",
-    ),
-    "mcSi"=>array(
-      "displayName"=>"MC Si",
-      "units"=>"K",
-      "table"=>"lakeshore218s1",
-    ),
-    "IVCpressure"=>array(
-      "displayName"=>"IVC pressure",
-      "units"=>"mbar",
-      "table"=>"pfeiffertpg262",
-    ),
-    "d4"=>array(
-      "displayName"=>"dee fo'",
-      "units"=>"dillobars",
-      "table"=>"usb1608g",
-    ),
-  );
+  //import known devices from external file
+  //http://stackoverflow.com/questions/1957732/can-i-include-code-into-a-php-class#1957830
+  public function __construct(){
+    include('knowndevices.php');
+    $this->knownDevices=$KNOWN_DEVICES;
+  }
 
   public function getDeviceList(){
     return array_keys($this->report["devices"]);
@@ -215,6 +198,7 @@ class SlowControlReporter{
   }
 
   public function getPassword(){
+    //put password in different file and do not track with versioning
     include('password.php');
     return $DATABASEPASSWORD;
   }
@@ -239,6 +223,9 @@ class SlowControlReporter{
   public function setDBH($DBH){
     $this->DBH=$DBH;
   }
+}
+
+function getKnownDevices(){
 }
 
 function fakeIncomingData(){
