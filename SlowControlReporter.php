@@ -29,6 +29,16 @@ class SlowControlReporter{
       "units"=>"K",
       "table"=>"lakeshore218s1",
     ),
+    "IVCpressure"=>array(
+      "displayName"=>"IVC pressure",
+      "units"=>"mbar",
+      "table"=>"pfeiffertpg262",
+    ),
+    "d4"=>array(
+      "displayName"=>"dee fo'",
+      "units"=>"dillobars",
+      "table"=>"usb1608g",
+    ),
   );
 
   public function getDeviceList(){
@@ -236,8 +246,9 @@ function fakeIncomingData(){
   $incomingDevList["incomingDevs"]=[];
   array_push($incomingDevList["incomingDevs"],'evapSi');
   array_push($incomingDevList["incomingDevs"],'mcSi');
-  //array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["NData"]="10";
+  array_push($incomingDevList["incomingDevs"],'IVCpressure');
+  array_push($incomingDevList["incomingDevs"],'d4');
+  $incomingDevList["NData"]="5";
   return $incomingDevList;
 }
 
