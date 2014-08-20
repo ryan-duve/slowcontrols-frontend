@@ -235,7 +235,7 @@ function fakeIncomingData(){
   array_push($incomingDevList["incomingDevs"],'mcSi');
   array_push($incomingDevList["incomingDevs"],'IVCpressure');
   array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["NData"]="5";
+  $incomingDevList["nData"]="5";
   return $incomingDevList;
 }
 
@@ -251,8 +251,8 @@ $SCR = new SlowControlReporter();
 //simulate incoming data
 $incomingData=fakeIncomingData();
 
-//sanitize incoming NData or fail
-$cleanNData=$SCR->sanitizeNData($incomingData["NData"]);
+//sanitize incoming nData or fail
+$cleanNData=$SCR->sanitizeNData($incomingData["nData"]);
 $SCR->setNData($cleanNData);
 
 //add devices to be queried to reporter
