@@ -1,7 +1,8 @@
 <?php
 //knowndevices.php
-//list of devices and their properties
-//program will reject a device if it is not on this list
+//
+//lists devices and their properties; the program will reject a device if it is 
+//not on this list
 
 $KNOWN_DEVICES=array(
   "evapSi"=>array(
