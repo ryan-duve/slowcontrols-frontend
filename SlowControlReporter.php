@@ -11,40 +11,63 @@
 class SlowControlReporter{
 
   
-  protected $deviceList=[];
   protected $nData=0;
   protected $queryResponse=[];
+  protected $report=[];
   protected $DBH=null;//database handler
   protected $MAXNDATA=10001;
 
-  protected $deviceTableMap=array(
-    "evapSi"=>"lakeshore218s1",
-    "mcSi"=>"lakeshore218s1",
-    "d4"=>"usb1608g");
+  #declaring multidimensional arrays: http://stackoverflow.com/questions/1811100/how-to-declare-a-two-dimensional-array-most-easily-in-php#1811121
+  protected $knownDevices=array(
+    "evapSi"=>array(
+      "displayName"=>"Evaporator Si",
+      "units"=>"K",
+      "table"=>"lakeshore218s1",
+    ),
+    "mcSi"=>array(
+      "displayName"=>"MC Si",
+      "units"=>"K",
+      "table"=>"lakeshore218s1",
+    ),
+  );
 
   public function getDeviceList(){
-    return $this->deviceList;
+    return array_keys($this->report["devices"]);
   }
 
   public function getNData(){
     return $this->nData;
   }
 
+  public function addDevices($devList){
+    foreach($devList as $dev){
+      $this->addDevice($dev);
+    }
+  }
+
   public function addDevice($dev){
 
+    //see if device is known
     try{
       $this->validateDevice($dev);
     }catch (Exception $e){
       $this->processException($e);
     }
 
-    array_push($this->deviceList,$dev);
+    $devDisplayName=$this->getDisplayNameForDevice($dev);
+    $devUnits=$this->getUnitsForDevice($dev);
+
+    $this->report["devices"][$dev]=array(
+      "displayName"=>$devDisplayName,
+      "units"=>$devUnits,
+      "data"=>array()
+    );
   }
 
   public function validateDevice($dev){
-    //device list
-    if(!array_key_exists($dev,$this->deviceTableMap)){
-      throw new Exception("device $dev not in deviceTableMap");
+    //check device list
+    if(!array_key_exists($dev,$this->knownDevices)){
+      throw new Exception("device $dev not in knownDevices");
     }
   }
 
@@ -53,7 +76,15 @@ class SlowControlReporter{
   }
 
   public function getTableForDevice($dev){
-    return $this->deviceTableMap[$dev];
+    return $this->knownDevices[$dev]["table"];
+  }
+
+  public function getDisplayNameForDevice($dev){
+    return $this->knownDevices[$dev]["displayName"];
+  }
+
+  public function getUnitsForDevice($dev){
+    return $this->knownDevices[$dev]["units"];
   }
 
   public function getData($connection, $tablename, $nData){
@@ -110,13 +141,25 @@ class SlowControlReporter{
       //temporary error report
       echo "Error message: ",$e->getMessage(),"***<br><br>";
 
-      //add error to query reponse
-      $this->queryResponse["errors"][]=$e;
+      //add error to report
+      $this->report["errors"][]=$e;
 
       //terminate program
       //throw $e;
   }
 
+  public function fillReportWithData(){
+    //get devs
+    $devs=$this->getDeviceList();
+    
+    //get data dump for each dev
+    foreach($devs as $dev){
+      $res=$this->queryDatabase($dev);
+
+      //attach data to report
+      $this->addQueryResponse($dev,$res);
+    }
+  }
   public function queryDatabase($dev){
     //open SQL connection
     $this->connectToDatabase();
@@ -139,20 +182,26 @@ class SlowControlReporter{
     $res=$STH->fetchAll(PDO::FETCH_ASSOC);
     //var_dump($res);
       
-    $this->addQueryResponse($dev,$res);
-
-    //foreach ($res as $row){
-    //  echo $row["raw_reading"]."\t".$row["created_at"]."<br>";
-    //}
+    return $res;
 
   }
 
   public function addQueryResponse($dev, $res){
-    $this->queryResponse["devices"][$dev]=$res;
+    $this->report["devices"][$dev]["data"]=$res;
   }
 
-  public function getQueryResponse(){
-    return $this->queryResponse;
+//  public function getQueryResponse(){
+//    return $this->queryResponse;
+//  }
+
+  public function getReport(){
+    return $this->report;
+  }
+
+  public function printReport(){
+    echo "<pre>Report: ";
+    print_r($this->getReport());
+    echo "</pre>";
   }
 
   public function getPassword(){
@@ -187,7 +236,7 @@ function fakeIncomingData(){
   $incomingDevList["incomingDevs"]=[];
   array_push($incomingDevList["incomingDevs"],'evapSi');
   array_push($incomingDevList["incomingDevs"],'mcSi');
-  array_push($incomingDevList["incomingDevs"],'d4');
+  //array_push($incomingDevList["incomingDevs"],'d4');
   $incomingDevList["NData"]="10";
   return $incomingDevList;
 }
@@ -197,6 +246,8 @@ function fakeIncomingData(){
 //******************************************************************************
 //START PROGRAM
 //******************************************************************************
+
+//instantiate new reporter
 $SCR = new SlowControlReporter();
 
 //simulate incoming data
@@ -207,9 +258,10 @@ $cleanNData=$SCR->sanitizeNData($incomingData["NData"]);
 $SCR->setNData($cleanNData);
 
 //add devices to be queried to reporter
-foreach($incomingData["incomingDevs"] as $dev){
-  $SCR->addDevice($dev);
-}
+$SCR->addDevices($incomingData["incomingDevs"]);
+
+//fill report with data
+$SCR->fillReportWithData();
 
 //build query response
 foreach($SCR->getDeviceList() as $dev){
@@ -217,4 +269,4 @@ foreach($SCR->getDeviceList() as $dev){
 }
 
 //echo query response
-var_dump($SCR->getQueryResponse());
+$SCR->printReport();
