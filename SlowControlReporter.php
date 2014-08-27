@@ -245,11 +245,11 @@ function fakeIncomingData(){
 //START PROGRAM
 //******************************************************************************
 
-//instantiate new reporter
-$SCR = new SlowControlReporter();
-
 //simulate incoming data
 $incomingData=fakeIncomingData();
+
+//instantiate new reporter
+$SCR = new SlowControlReporter();
 
 //sanitize incoming nData or fail
 $cleanNData=$SCR->sanitizeNData($incomingData["nData"]);
