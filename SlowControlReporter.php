@@ -93,10 +93,13 @@ class SlowControlReporter{
   
   public function sanitizeNData($nData){
     //make sure NData is a valid int form or fail
-    $this->validateNData($nData);
+    $this->validatePositiveInt($nData);
 
     //convert nData string to int
     $nData=$this->enforceIntNData($nData);
+
+    //enforce maximum value
+    $this->validateMaxValue($nData);
 
     //return cleaned nData
     return $nData;
@@ -106,7 +109,18 @@ class SlowControlReporter{
     return (int)$nData;
   }
 
-  public function validateNData($nData){
+  public function validateMaxValue($nData){
+
+    try{
+      if($nData > $this->MAXNDATA){
+        throw new Exception("nData = $nData > $this->MAXNDATA max");
+      }
+    }catch (Exception $e){
+      $this->processException($e);
+    }
+  }
+
+  public function validatePositiveInt($nData){
 
     try{
       //returns errors if $nData invalid
@@ -114,11 +128,11 @@ class SlowControlReporter{
 
       if($nDataMatchResult===FALSE){
         //preg_match fails
-        throw new Exception('preg_match error occurred!');
+        throw new Exception('preg_match error occurred');
 
       }else if($nDataMatchResult===0){
         //non-digit in nData
-        throw new Exception('preg_match did not match!');
+        throw new Exception("preg_match did not match; is $nData an int?");
 
       }else if((int)$nData>$this->MAXNDATA){
         //returns error if $nData greater than MAXNDATA
@@ -132,13 +146,13 @@ class SlowControlReporter{
 
   public function processException($e){
       //temporary error report
-      echo "Error message: ",$e->getMessage(),"***<br><br>";
+      echo "Error message: ",$e->getMessage(),"<br><br>";
 
       //add error to report
       $this->report["errors"][]=$e;
 
       //terminate program
-      //throw $e;
+      throw $e;
   }
 
   public function fillReportWithData(){
@@ -235,7 +249,7 @@ function fakeIncomingData(){
   array_push($incomingDevList["incomingDevs"],'mcSi');
   array_push($incomingDevList["incomingDevs"],'IVCpressure');
   array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["nData"]="5";
+  $incomingDevList["nData"]="1";
   return $incomingDevList;
 }
 
