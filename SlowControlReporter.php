@@ -175,7 +175,7 @@ class SlowControlReporter{
     //STH="statement handler"
     $table=$this->getTableForDevice($dev);
      
-    $STH=$this->DBH->prepare("SELECT raw_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL :lim MINUTE) AND NOW()) ORDER BY id DESC");
+    $STH=$this->DBH->prepare("SELECT raw_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL :lim SECOND) AND NOW()) ORDER BY id DESC");
     $STH->bindParam(':dev',$dev,PDO::PARAM_STR);
     $STH->bindParam(':lim',$this->getNData(),PDO::PARAM_INT);
 
@@ -249,7 +249,7 @@ function fakeIncomingData(){
   array_push($incomingDevList["incomingDevs"],'mcSi');
   array_push($incomingDevList["incomingDevs"],'IVCpressure');
   array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["nData"]="120";
+  $incomingDevList["nData"]="3";
   return $incomingDevList;
 }
 
