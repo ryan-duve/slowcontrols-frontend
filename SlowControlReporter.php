@@ -211,6 +211,10 @@ class SlowControlReporter{
     echo "</pre>";
   }
 
+  public function jsonReport(){
+    echo json_encode($this->getReport());
+  }
+
   public function getPassword(){
     //put password in different file and do not track with versioning
     include('password.php');
@@ -278,4 +282,6 @@ foreach($SCR->getDeviceList() as $dev){
 }
 
 //echo query response
-$SCR->printReport();
+//$SCR->printReport();
+
+$SCR->jsonReport();
