@@ -14,7 +14,7 @@ class SlowControlReporter{
   protected $queryResponse=[];
   protected $report=[];
   protected $DBH=null;//database handler
-  protected $MAXNDATA=10001;
+  protected $MAXNDATA=50;
   protected $knownDevices=null;
 
   //import known devices from external file
@@ -146,13 +146,13 @@ class SlowControlReporter{
 
   public function processException($e){
       //temporary error report
-      echo "Error message: ",$e->getMessage(),"<br><br>";
+      //echo "Error message: ",$e->getMessage(),"<br><br>";
 
       //add error to report
-      $this->report["errors"][]=$e;
+      $this->report["errors"][]=$e->getMessage();
 
       //terminate program
-      throw $e;
+      //throw $e;
   }
 
   public function fillReportWithData(){
@@ -205,7 +205,7 @@ class SlowControlReporter{
     return $this->report;
   }
 
-  public function printReport(){
+  public function echoReport(){
     echo "<pre>Report: ";
     print_r($this->getReport());
     echo "</pre>";
@@ -250,7 +250,7 @@ function fakeIncomingData(){
   array_push($incomingDevList["incomingDevs"],'mcSi');
   array_push($incomingDevList["incomingDevs"],'IVCpressure');
   array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["nData"]="3";
+  $incomingDevList["nData"]="10";
   return $incomingDevList;
 }
 
@@ -282,6 +282,6 @@ foreach($SCR->getDeviceList() as $dev){
 }
 
 //echo query response
-//$SCR->printReport();
+//$SCR->echoReport();
 
 $SCR->jsonReport();
