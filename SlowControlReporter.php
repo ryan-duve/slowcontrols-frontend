@@ -239,9 +239,6 @@ class SlowControlReporter{
   }
 }
 
-function getKnownDevices(){
-}
-
 function fakeIncomingData(){
   $incomingDevList=[];
   $incomingDevList["incomingDevs"]=[];
