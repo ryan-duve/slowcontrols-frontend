@@ -4,8 +4,9 @@
 //object that 
 // * inputs requested device(s) and number of data records,
 // * queries respective tables for those data records,
-// * formats to JSON object and 
-// * returns ajax request
+// * formats to JSON object and returns ajax request
+//
+// The returned object is a "report".
 //
 
 class SlowControlReporter{
@@ -194,7 +195,7 @@ class SlowControlReporter{
   }
 
   public function addQueryResponse($dev, $res){
-    $this->report["devices"][$dev]["data"]=$res;
+    //$this->report["devices"][$dev]["data"]=$res;
   }
 
 //  public function getQueryResponse(){
@@ -207,12 +208,13 @@ class SlowControlReporter{
 
   public function echoReport(){
     echo "<pre>Report: ";
-    print_r($this->getReport());
+    print_r($this->jsonReport());
     echo "</pre>";
   }
 
   public function jsonReport(){
-    echo json_encode($this->getReport());
+    //http://stackoverflow.com/questions/7097374/php-pretty-print-json-encode#13638998
+    echo json_encode($this->getReport(),JSON_PRETTY_PRINT);
   }
 
   public function getPassword(){
@@ -282,6 +284,5 @@ foreach($SCR->getDeviceList() as $dev){
 }
 
 //echo query response
-//$SCR->echoReport();
+$SCR->echoReport();
 
-$SCR->jsonReport();
