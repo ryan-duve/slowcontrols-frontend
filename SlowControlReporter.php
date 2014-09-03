@@ -196,7 +196,6 @@ class SlowControlReporter{
   }
 
   public function addQueryResponse($dev, $res){
-    echo "<br><br><br><pre>Res=".var_dump($res);
     $this->report["devices"][$dev]["data"]=$res;
   }
 
@@ -209,7 +208,7 @@ class SlowControlReporter{
   }
 
   public function echoReport(){
-    echo "<pre>Report: ";
+    echo "<pre>";
     print_r($this->jsonReport());
     echo "</pre>";
   }
@@ -251,10 +250,10 @@ function fakeIncomingData(){
   $incomingDevList=[];
   $incomingDevList["incomingDevs"]=[];
   array_push($incomingDevList["incomingDevs"],'evapSi');
-  array_push($incomingDevList["incomingDevs"],'mcSi');
+  //array_push($incomingDevList["incomingDevs"],'mcSi');
   array_push($incomingDevList["incomingDevs"],'IVCpressure');
-  array_push($incomingDevList["incomingDevs"],'d4');
-  $incomingDevList["nData"]="10";
+  //array_push($incomingDevList["incomingDevs"],'d4');
+  $incomingDevList["nData"]="5";
   return $incomingDevList;
 }
 
