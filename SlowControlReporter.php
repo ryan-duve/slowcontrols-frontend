@@ -168,6 +168,7 @@ class SlowControlReporter{
       $this->addQueryResponse($dev,$res);
     }
   }
+
   public function queryDatabase($dev){
     //open SQL connection
     $this->connectToDatabase();
@@ -195,7 +196,8 @@ class SlowControlReporter{
   }
 
   public function addQueryResponse($dev, $res){
-    //$this->report["devices"][$dev]["data"]=$res;
+    echo "<br><br><br><pre>Res=".var_dump($res);
+    $this->report["devices"][$dev]["data"]=$res;
   }
 
 //  public function getQueryResponse(){
