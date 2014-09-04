@@ -76,7 +76,7 @@ function poll() {
 		//check report for errors
 		handleReportErrors(report);
 
-		//make flot data object out of report
+/*		//make flot data object out of report
 		var flot_data_object;
 		flot_data_object = constructFlotObjectFromReport(report);
 
@@ -99,6 +99,7 @@ function poll() {
 				"legend": {"position":"nw"}
 			}
 		);
+*/
 
 	}
 
