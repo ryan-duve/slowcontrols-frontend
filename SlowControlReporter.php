@@ -212,9 +212,7 @@ class SlowControlReporter{
   }
 
   public function echoReport(){
-    echo "<pre>";
     print_r($this->jsonReport());
-    echo "</pre>";
   }
 
   public function jsonReport(){
@@ -257,4 +255,15 @@ class SlowControlReporter{
   public function setDBH($DBH){
     $this->DBH=$DBH;
   }
+
+	//throws a fake error
+	public function fakeError($fakeErrorMsg){
+		try{
+			throw new Exception($fakeErrorMsg);
+		}catch (Exception $e){
+			$this->processException($e);
+		}
+
+	}
+
 }
