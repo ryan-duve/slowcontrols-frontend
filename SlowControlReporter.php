@@ -231,13 +231,13 @@ class SlowControlReporter{
   }
 
   public function connectToDatabase(){
-    //connect to DB
-    //$host="localhost";
-    //$dbname="slowcontrols";
-    //$user="uva";
-
+    //get database info from git-hidden file
 		$dbinfo=$this->getDBinfo();
-		var_dump($dbinfo);
+
+		$host=$dbinfo["host"];
+		$dbname=$dbinfo["dbname"];
+		$user=$dbinfo["user"];
+		
     $pass=$this->getPassword();//don't share!!
 
     try{
@@ -258,10 +258,11 @@ class SlowControlReporter{
 function fakeIncomingData(){
   $incomingDevList=[];
   $incomingDevList["incomingDevs"]=[];
-  array_push($incomingDevList["incomingDevs"],'evapSi');
+  //array_push($incomingDevList["incomingDevs"],'evapSi');
   //array_push($incomingDevList["incomingDevs"],'mcSi');
-  array_push($incomingDevList["incomingDevs"],'IVCpressure');
+  //array_push($incomingDevList["incomingDevs"],'IVCpressure');
   //array_push($incomingDevList["incomingDevs"],'d4');
+  array_push($incomingDevList["incomingDevs"],'d0');
   $incomingDevList["nData"]="5";
   return $incomingDevList;
 }
