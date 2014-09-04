@@ -80,10 +80,22 @@ function poll() {
 			//log errors
 		  var readableJSONerrors = JSON.stringify(report.errors);
 			console.log(readableJSONerrors);
+
+      //flash body background
+      blinkDOM("body");
+
 		}else{
-			console.log('no errors!');
+			//console.log('no errors!');
 		}
 	}
+
+  //blink DOM element
+  function blinkDOM(element){
+    $(element).addClass("redBG").delay(500).queue(function(next){
+      $(this).removeClass("redBG");
+      next();
+    });
+  }
 
 	//function for when report comes in
 	function onReportReceived(report){
