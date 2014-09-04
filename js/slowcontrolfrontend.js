@@ -104,10 +104,83 @@ function poll() {
 		//check report for errors
 		handleReportErrors(report);
 
-/*		//make flot data object out of report
-		var flot_data_object;
-		flot_data_object = constructFlotObjectFromReport(report);
+  //report is a JSON object returned from SlowControlReporter, but not
+  //formatted the necessary way for flot.  constructFlotDataObjectFromReport()
+  //formats the report and returns an object flot can take as a $.plot paramter
+    /* report format:
+        {
+          "devices": {
+            "d0": {
+              "displayName": "dee o'",
+              "units": "arbs",
+              "data": [
+                {
+                  "raw_reading": "2.2968",
+                  "created_at": "2014-07-03 10:22:25"
+                },
+                {
+                  "raw_reading": "2.1643",
+                  "created_at": "2014-07-03 10:22:24"
+                }
+              ]
+            },
+            "d1": {
+              "displayName": "dee un'",
+              "units": "arbs",
+              "data": [
+                {
+                  "raw_reading": "0.0003",
+                  "created_at": "2014-07-03 10:22:25"
+                },
+                {
+                  "raw_reading": "0.0003",
+                  "created_at": "2014-07-03 10:22:24"
+                }
+              ]
+             }
+          }
+        }
 
+      flot data object format:      
+      {
+        "d0":{
+          "label":"dee o",
+          "data":[
+                  ["2014-07-03 10:22:25","2.2968"],
+                  ["2014-07-03 10:22:24","2.1643"]
+                 ]
+        },
+        "d1":{
+          "label":"dee o",
+          "data":[
+                  ["2014-07-03 10:22:25","0.0003"],
+                  ["2014-07-03 10:22:24","0.0003"]
+                 ]
+        }
+      }
+     */
+  function constructFlotDataObjectFromReport(report){
+    var flot_data_object={};
+
+    //$(document.body).prepend("<pre>"+JSON.stringify(report,undefined,2)+"</pre>");
+
+    for (var dev in report.devices){
+      if(report.devices.hasOwnProperty(dev)){
+        //alert(dev+" -> "+JSON.stringify(report.devices[dev]));
+
+        flot_data_object[dev]["label"]=report.devices[dev].displayName;
+        alert(JSON.stringify(flot_data_object));
+      }
+    }
+
+    //return flot_data_object;
+  }
+
+		//make flot data object out of report
+		var flot_data_object;
+		flot_data_object = constructFlotDataObjectFromReport(report);
+
+/*
 		//fill checkboxes
 		fillCheckboxDiv(report);
 
@@ -140,5 +213,5 @@ function poll() {
 	});
 
 	//delay before polling self again
-	setTimeout(poll,1000);
+	setTimeout(poll,5000);
 }
