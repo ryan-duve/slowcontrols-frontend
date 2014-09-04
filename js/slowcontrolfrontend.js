@@ -91,6 +91,7 @@ function poll() {
 	}
 
   //blink DOM element
+  //http://stackoverflow.com/questions/2510115/jquery-can-i-call-delay-between-addclass-and-such#2510255
   function blinkDOM(element){
     $(element).addClass("redBG").delay(500).queue(function(next){
       $(this).removeClass("redBG");
