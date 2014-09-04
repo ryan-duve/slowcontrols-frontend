@@ -71,6 +71,20 @@ setTimeout(fetchData, 1000);
 
 //poll for report
 function poll() {
+
+	//check for error in report, log to console
+	function handleReportErrors(report){
+		
+		//check for errors
+		if(report.hasOwnProperty('errors')){
+			//log errors
+		  var readableJSONerrors = JSON.stringify(report.errors);
+			console.log(readableJSONerrors);
+		}else{
+			console.log('no errors!');
+		}
+	}
+
 	//function for when report comes in
 	function onReportReceived(report){
 		//check report for errors
