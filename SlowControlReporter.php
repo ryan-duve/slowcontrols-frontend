@@ -224,11 +224,20 @@ class SlowControlReporter{
     return $DATABASEPASSWORD;
   }
 
+	//hide DB info from the git repo
+  public function getDBinfo(){
+    include('dbinfo.php');
+    return $DATABASEINFO;
+  }
+
   public function connectToDatabase(){
     //connect to DB
-    $host="localhost";
-    $dbname="slowcontrols";
-    $user="uva";
+    //$host="localhost";
+    //$dbname="slowcontrols";
+    //$user="uva";
+
+		$dbinfo=$this->getDBinfo();
+		var_dump($dbinfo);
     $pass=$this->getPassword();//don't share!!
 
     try{
