@@ -30,4 +30,9 @@ $KNOWN_DEVICES=array(
     "units"=>"arbs",
     "table"=>"slowcontrolreadings",
   ),
+  "d1"=>array(
+    "displayName"=>"dee un'",
+    "units"=>"arbs",
+    "table"=>"slowcontrolreadings",
+  ),
 );

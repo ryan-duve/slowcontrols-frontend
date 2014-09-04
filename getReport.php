@@ -10,7 +10,8 @@ function fakeIncomingData(){
 				//array_push($incomingDevList["incomingDevs"],'IVCpressure');
 				//array_push($incomingDevList["incomingDevs"],'d4');
 				array_push($incomingDevList["incomingDevs"],'d0');
-				$incomingDevList["nData"]="5";
+				array_push($incomingDevList["incomingDevs"],'d1');
+				$incomingDevList["nData"]="2";
 				return $incomingDevList;
 }
 
