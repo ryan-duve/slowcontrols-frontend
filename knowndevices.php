@@ -25,4 +25,9 @@ $KNOWN_DEVICES=array(
     "units"=>"dillobars",
     "table"=>"usb1608g",
   ),
+  "d0"=>array(
+    "displayName"=>"dee o'",
+    "units"=>"arbs",
+    "table"=>"slowcontrolreadings",
+  ),
 );
