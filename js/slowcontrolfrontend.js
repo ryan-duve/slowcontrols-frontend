@@ -9,8 +9,8 @@ function fetchData() {
 								// hard-code color indices to prevent them from shifting as
 								// countries are turned on/off
 
-								var coloring=["#EDC240","#AFD8F8","#CB4B4B","#4DA74D"]
-												var i = 0;
+								var coloring=["#EDC240","#AFD8F8","#CB4B4B","#4DA74D"];
+								var i = 0;
 								$.each(datasets, function(key, val) {
 																val.color = i;
 																++i;
@@ -46,17 +46,17 @@ function fetchData() {
 																});
 
 								$.plot($("#placeholder"), data, {
-yaxis: {},
-xaxis: { mode: "time",
-timezone: "browser",
-timeformat:"%h:%M:%S",
-min: Date.now()-1200*1000,//120 seconds * 1000 milliseconds/second
-max: Date.now()
-},
-"lines": {"show": "true"},
-"points": {"show": "true"},
-"legend":{"position":"nw"}
-});
+										yaxis: {},
+										xaxis: { mode: "time",
+															timezone: "browser",
+															timeformat:"%h:%M:%S",
+															min: Date.now()-1200*1000,//120 seconds * 1000 milliseconds/second
+															max: Date.now()
+										},
+										"lines": {"show": "true"},
+										"points": {"show": "true"},
+										"legend":{"position":"nw"}
+									});
 }
 
 $.ajax({
@@ -67,4 +67,49 @@ success: onDataReceived
 });
 
 setTimeout(fetchData, 1000);
+}
+
+//poll for report
+function poll() {
+	//function for when report comes in
+	function onReportReceived(report){
+		//check report for errors
+		handleReportErrors(report);
+
+		//make flot data object out of report
+		var flot_data_object;
+		flot_data_object = constructFlotObjectFromReport(report);
+
+		//fill checkboxes
+		fillCheckboxDiv(report);
+
+		//plot it all!
+		$.plot($("#placeholder"),
+			data, {
+				yaxis: {},
+				xaxis: {
+								mode: "time",
+								timezone: "browser",
+								timeformat:"%h:%M:%S",
+								min: Date.now()-1200*1000,//120 seconds * 1000 milliseconds/second
+								max: Date.now()
+				},
+				"lines": {"show": "true"},
+				"points": {"show": "true"},
+				"legend": {"position":"nw"}
+			}
+		);
+
+	}
+
+	//make ajax call for report
+	$.ajax({
+					url:"getReport.php",
+					type:"GET",
+					dataType:"json",
+					success: onReportReceived
+	});
+
+	//delay before polling self again
+	setTimeout(poll,1000);
 }
