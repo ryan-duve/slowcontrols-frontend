@@ -82,6 +82,7 @@ function poll() {
 			console.log(readableJSONerrors);
 
       //flash body background
+      //it isn't very descriptive, but it has a better chance of being reported than a notification
       blinkDOM("body");
 
 		}else{
