@@ -1,3 +1,8 @@
+$(function() {
+  //initial poll for data
+  poll();
+});
+
 function fetchData() {
 
 				function onDataReceived(series) {
@@ -79,7 +84,7 @@ function poll() {
 		if(report.hasOwnProperty('errors')){
 			//log errors
 		  var readableJSONerrors = JSON.stringify(report.errors);
-			console.log(readableJSONerrors);
+			//console.log(readableJSONerrors);
 
       //flash body background
       //it isn't very descriptive, but it has a better chance of being reported than a notification
@@ -103,15 +108,15 @@ function poll() {
 	function onReportReceived(report){
 		//check report for errors
 		handleReportErrors(report);
-
-  //report is a JSON object returned from SlowControlReporter, but not
-  //formatted the necessary way for flot.  constructFlotDataObjectFromReport()
-  //formats the report and returns an object flot can take as a $.plot paramter
+  
+    //report is a JSON object returned from SlowControlReporter, but not
+    //formatted the necessary way for flot.  constructFlotDataObjectFromReport()
+    //formats the report and returns an object flot can take as a $.plot paramter
     /* report format:
         {
           "devices": {
             "d0": {
-              "displayName": "dee o'",
+              "displayName": "dee o",
               "units": "arbs",
               "data": [
                 {
@@ -125,7 +130,7 @@ function poll() {
               ]
             },
             "d1": {
-              "displayName": "dee un'",
+              "displayName": "dee un",
               "units": "arbs",
               "data": [
                 {
@@ -142,66 +147,93 @@ function poll() {
         }
 
       flot data object format:      
-      {
-        "d0":{
+      [
+        {
           "label":"dee o",
           "data":[
                   ["2014-07-03 10:22:25","2.2968"],
                   ["2014-07-03 10:22:24","2.1643"]
                  ]
         },
-        "d1":{
+        {
           "label":"dee o",
           "data":[
                   ["2014-07-03 10:22:25","0.0003"],
                   ["2014-07-03 10:22:24","0.0003"]
                  ]
         }
-      }
+      ]
      */
-  function constructFlotDataObjectFromReport(report){
-    var flot_data_object={};
+    function constructFlotDataObjectFromReport(report){
+      var flot_data_object={};
 
-    //$(document.body).prepend("<pre>"+JSON.stringify(report,undefined,2)+"</pre>");
+      //loop over all devices
+      for (var dev in report.devices){
+        flot_data_object[dev]={};
 
-    for (var dev in report.devices){
-      if(report.devices.hasOwnProperty(dev)){
-        //alert(dev+" -> "+JSON.stringify(report.devices[dev]));
+        //set label
+        flot_data_object[dev]['label']=report.devices[dev].displayName;
 
-        flot_data_object[dev]["label"]=report.devices[dev].displayName;
-        alert(JSON.stringify(flot_data_object));
+        //set data
+        data = report.devices[dev].data;
+
+        //make array out of dev's JSON data in report
+        var data_array=[];
+        for(var i=0;i<data.length;++i){
+          //make a data point (x,y) from dev report data
+          data_point=[];
+          data_point.push(data[i]["created_at"]);
+          data_point.push(data[i]["raw_reading"]);
+
+          //add data point to data array
+          data_array.push(data_point);
+        }
+
+        //add data array to flot_data_object
+        flot_data_object[dev]['data']=data_array;
       }
+
+      console.log(JSON.stringify(flot_data_object.d1));
+      console.log(flot_data_object);
+      return flot_data_object;
     }
 
-    //return flot_data_object;
-  }
+	  //make flot data object out of report
+	  flot_data_object = constructFlotDataObjectFromReport(report);
 
-		//make flot data object out of report
-		var flot_data_object;
-		flot_data_object = constructFlotDataObjectFromReport(report);
-
-/*
 		//fill checkboxes
-		fillCheckboxDiv(report);
+		//fillCheckboxDiv(report);
+
+    var fdo=[
+             {
+               "label":"d1",
+               "color":"blue",
+               "data":[
+                       ["1409934293000","1"],
+                       ["1409934294000","2"],
+                       ["1409934295000","3"],
+                       ["1409934296000","4"],
+                       ["1409934297000","5"],
+                       ["1409934298000","6"],
+                       ["1409934299000","7"]
+                      ]
+             }
+            ];//test object to get flot working
 
 		//plot it all!
-		$.plot($("#placeholder"),
-			data, {
+		$.plot($("#placeholder"),fdo, {
 				yaxis: {},
 				xaxis: {
 								mode: "time",
 								timezone: "browser",
 								timeformat:"%h:%M:%S",
-								min: Date.now()-1200*1000,//120 seconds * 1000 milliseconds/second
+								min: Date.now()-30*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
 								max: Date.now()
 				},
 				"lines": {"show": "true"},
 				"points": {"show": "true"},
 				"legend": {"position":"nw"}
-			}
-		);
-*/
-
+			});
 	}
 
 	//make ajax call for report
