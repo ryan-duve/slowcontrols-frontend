@@ -26,12 +26,12 @@ $KNOWN_DEVICES=array(
     "table"=>"usb1608g",
   ),
   "d0"=>array(
-    "displayName"=>"dee o'",
+    "displayName"=>"dee o",
     "units"=>"arbs",
     "table"=>"slowcontrolreadings",
   ),
   "d1"=>array(
-    "displayName"=>"dee un'",
+    "displayName"=>"dee un",
     "units"=>"arbs",
     "table"=>"slowcontrolreadings",
   ),
