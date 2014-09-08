@@ -13,7 +13,7 @@ function poll() {
 		if(report.hasOwnProperty('errors')){
 			//log errors
 		  var readableJSONerrors = JSON.stringify(report.errors);
-			//console.log(readableJSONerrors);
+			console.log(readableJSONerrors);
 
       //flash body background
       //it isn't very descriptive, but it has a better chance of being reported than a notification
