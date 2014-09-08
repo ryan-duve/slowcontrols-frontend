@@ -50,10 +50,12 @@ class SlowControlReporter{
 
     $devDisplayName=$this->getDisplayNameForDevice($dev);
     $devUnits=$this->getUnitsForDevice($dev);
+    $devColor=$this->getColorForDevice($dev);
 
     $this->report["devices"][$dev]=array(
       "displayName"=>$devDisplayName,
       "units"=>$devUnits,
+      "color"=>$devColor,
       "data"=>array()
     );
   }
@@ -75,6 +77,10 @@ class SlowControlReporter{
 
   public function getDisplayNameForDevice($dev){
     return $this->knownDevices[$dev]["displayName"];
+  }
+
+  public function getColorForDevice($dev){
+    return $this->knownDevices[$dev]["color"];
   }
 
   public function getUnitsForDevice($dev){
