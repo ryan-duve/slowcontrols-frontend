@@ -164,9 +164,21 @@ class SlowControlReporter{
     foreach($devs as $dev){
       $res=$this->queryDatabase($dev);
 
+      //format report date to JS time ("2014-09-08 08:53:18" to 1410180798000)
+      for($i=0;$i<count($res);$i++){
+        $mysqlTimestamp=$res[$i]['created_at'];
+        $unixTimestamp=$this->convertMysqlToJSTimestamp($mysqlTimestamp);
+        $res[$i]['created_at']=$unixTimestamp;
+      }
+
       //attach data to report
       $this->addQueryResponse($dev,$res);
     }
+  }
+
+  public function convertMysqlToJSTimestamp($mysqlTimestamp){
+    //add 2 hours for Hifrost.org server messup
+    return strtotime($mysqlTimestamp)*1000+2*60*60*1000;
   }
 
   public function queryDatabase($dev){
@@ -193,7 +205,6 @@ class SlowControlReporter{
     }
 
     $res=$STH->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($res);
       
     return $res;
 
