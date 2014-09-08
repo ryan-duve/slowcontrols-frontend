@@ -187,8 +187,11 @@ function poll() {
 
       }
 
-      //update last data point in status box
-      $("#lastreading-"+dev).text(deviceReadings[dev]);
+      //update status boxes
+      for(var dev in deviceReadings){
+        //update last data point in status box
+        $("#lastreading-"+dev).text(deviceReadings[dev]);
+      }
     }
 
     //return html for making a status box
