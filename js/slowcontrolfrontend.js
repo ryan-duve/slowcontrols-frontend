@@ -107,6 +107,16 @@ function poll() {
 
       //loop over all devices
       for (var dev in report.devices){
+        //check if dev checkbox is unchecked (i.e., we don't want it in the data stream)
+        if($('#statuscheckbox-'+dev).length){
+          checked=$('#statuscheckbox-'+dev).is(':checked');
+          //skip data set if checkbox isn't checked
+          if(!checked){
+            continue;
+          }
+        }
+
+
         flot_data_object={};
 
         //set label
