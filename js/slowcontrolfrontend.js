@@ -35,6 +35,9 @@ function poll() {
 
 	//function for when report comes in
 	function onReportReceived(report){
+    //debug
+    console.log(report);
+
 		//check report for errors
 		handleReportErrors(report);
   
@@ -141,11 +144,79 @@ function poll() {
       return flot_data;
     }
 
+    function updateStatusBoxes(report){
+      //get device names
+      var deviceReadings={};
+      for(var dev in report.devices){
+        deviceReadings[dev]=null;
+      }
+
+      //get device last data point
+      for(var dev in deviceReadings){
+        lastreading=report.devices[dev]["data"][0]["raw_reading"];
+        //format to 2 decimal points
+        lastreading=parseFloat(lastreading).toFixed(2);
+        deviceReadings[dev]=lastreading;
+      }
+
+      //create status boxes (if doesn't exist)
+      for(var dev in deviceReadings){
+
+        //make statusbox HTML if it doesn't exist
+        if($("#statusbox-"+dev).length==0){
+          makeStatusBox(dev);
+
+          //set units
+          units=report.devices[dev]["units"];
+          $("#lastreadingunits-"+dev).text(units);
+
+          //set bgcolor
+          bgcolor=report.devices[dev]["color"];
+          $("#statusbox-"+dev).css('background',bgcolor);
+        }
+
+      }
+
+      //update last data point in status box
+      $("#lastreading-"+dev).text(deviceReadings[dev]);
+    }
+
+    //return html for making a status box
+    function makeStatusBox(dev){
+      //status box
+      $('<div/>',{
+        id:'statusbox-'+dev,
+        class:'statusbox'
+      }).appendTo('#statusboxlist');
+
+      //checkbox
+      $('#statusbox-'+dev).append($('<input>',{
+        type:'checkbox',
+        id:'statuscheckbox-'+dev,
+        checked:'checked'
+      }));
+
+      //reading in statusbox
+      $('<span/>',{
+        id:'lastreading-'+dev,
+        class:'lastreading'
+      }).appendTo('#statusbox-'+dev);
+
+      //units in statusbox
+      $('<span/>',{
+        id:'lastreadingunits-'+dev,
+        class:'lastreadingunits'
+      }).appendTo('#statusbox-'+dev);
+
+    }
+
 	  //make flot data array out of report
 	  flot_data = constructFlotDataFromReport(report);
 
-		//fill checkboxes
-		//fillCheckboxDiv(report);
+		//update status box
+    //"status box" = checkbox with last strip chart value (+units)
+    //make status boxes if they do not exists
+    updateStatusBoxes(report);
 
 		//plot it all!
 		$.plot($("#placeholder"),flot_data, {
