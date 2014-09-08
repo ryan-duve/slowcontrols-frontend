@@ -110,8 +110,8 @@ function poll() {
 		handleReportErrors(report);
   
     //report is a JSON object returned from SlowControlReporter, but not
-    //formatted the necessary way for flot.  constructFlotDataObjectFromReport()
-    //formats the report and returns an object flot can take as a $.plot paramter
+    //formatted the necessary way for flot.  constructFlotDataFromReport()
+    //formats the report and returns an array flot can take as a $.plot paramter
     /* report format:
         {
           "devices": {
@@ -147,24 +147,30 @@ function poll() {
         }
 
       flot data object format:      
-      [
+      var data=[
         {
           "label":"dee o",
+          "color":"blue",
           "data":[
-                  ["2014-07-03 10:22:25","2.2968"],
-                  ["2014-07-03 10:22:24","2.1643"]
+                  ["1410179062000","2.2968"],
+                  ["1410179072000","2.1643"]
                  ]
         },
         {
           "label":"dee o",
+          "color":"red",
           "data":[
-                  ["2014-07-03 10:22:25","0.0003"],
-                  ["2014-07-03 10:22:24","0.0003"]
+                  ["1410179082000","0.0003"],
+                  ["1410179092000","0.0003"]
                  ]
         }
       ]
      */
-    function constructFlotDataObjectFromReport(report){
+    function constructFlotDataFromReport(report){
+      //flot_data is what is passed to $.plot
+      var flot_data=[];
+
+      //flot data object is set to flot_data[0] per flot API
       var flot_data_object={};
 
       //loop over all devices
@@ -174,13 +180,19 @@ function poll() {
         //set label
         flot_data_object[dev]['label']=report.devices[dev].displayName;
 
+        //set color
+        //temp hard code to blue for now
+        flot_data_object[dev]['color']='blue';
+
         //set data
         data = report.devices[dev].data;
 
         //make array out of dev's JSON data in report
+        //data_array returns as [ [u,v],[w,x],[y,z] ]
         var data_array=[];
         for(var i=0;i<data.length;++i){
           //make a data point (x,y) from dev report data
+          //data_point returns as [u,v]
           data_point=[];
           data_point.push(data[i]["created_at"]);
           data_point.push(data[i]["raw_reading"]);
@@ -195,33 +207,22 @@ function poll() {
 
       console.log(JSON.stringify(flot_data_object.d1));
       console.log(flot_data_object);
-      return flot_data_object;
+
+      //pack JSON object into array (necessary for flot)
+      flot_data.push(flot_data_object);
+
+      return flot_data;
     }
 
-	  //make flot data object out of report
-	  flot_data_object = constructFlotDataObjectFromReport(report);
+	  //make flot data array out of report
+	  flot_data = constructFlotDataFromReport(report);
 
 		//fill checkboxes
 		//fillCheckboxDiv(report);
 
-    var fdo=[
-             {
-               "label":"d1",
-               "color":"blue",
-               "data":[
-                       ["1409934293000","1"],
-                       ["1409934294000","2"],
-                       ["1409934295000","3"],
-                       ["1409934296000","4"],
-                       ["1409934297000","5"],
-                       ["1409934298000","6"],
-                       ["1409934299000","7"]
-                      ]
-             }
-            ];//test object to get flot working
 
 		//plot it all!
-		$.plot($("#placeholder"),fdo, {
+		$.plot($("#placeholder"),flot_data, {
 				yaxis: {},
 				xaxis: {
 								mode: "time",
