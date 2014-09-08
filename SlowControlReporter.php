@@ -177,7 +177,6 @@ class SlowControlReporter{
   }
 
   public function convertMysqlToJSTimestamp($mysqlTimestamp){
-    //add 2 hours for Hifrost.org server messup
     return strtotime($mysqlTimestamp)*1000;
   }
 
