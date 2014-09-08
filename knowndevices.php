@@ -37,7 +37,7 @@ $KNOWN_DEVICES=array(
   ),
   "d1"=>array(
     "displayName"=>"dee un",
-    "units"=>"arbinitos",
+    "units"=>"arbis",
     "table"=>"slowcontrolreadings",
     "color"=>"green",
   ),
