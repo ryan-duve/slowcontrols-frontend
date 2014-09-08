@@ -132,12 +132,13 @@ function poll() {
 
         //add data array to flot_data_object
         flot_data_object['data']=data_array;
+
+        //pack JSON object into array (necessary for flot)
+        flot_data.push(flot_data_object);
+
       }
 
-      //pack JSON object into array (necessary for flot)
-      flot_data.push(flot_data_object);
-
-      //console.log(JSON.stringify(flot_data));
+      console.log(JSON.stringify(flot_data));
       return flot_data;
     }
 
