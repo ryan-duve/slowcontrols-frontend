@@ -11,7 +11,7 @@ function fakeIncomingData(){
 				//array_push($incomingDevList["incomingDevs"],'d4');
 				array_push($incomingDevList["incomingDevs"],'d0');
 				array_push($incomingDevList["incomingDevs"],'d1');
-				$incomingDevList["nData"]="2";
+				$incomingDevList["nData"]="9";
 				return $incomingDevList;
 }
 
