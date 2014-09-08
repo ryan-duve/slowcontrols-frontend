@@ -13,7 +13,7 @@ function poll() {
 		if(report.hasOwnProperty('errors')){
 			//log errors
 		  var readableJSONerrors = JSON.stringify(report.errors);
-			console.log(readableJSONerrors);
+			//console.log(readableJSONerrors);
 
       //flash body background
       //it isn't very descriptive, but it has a better chance of being reported than a notification
@@ -110,8 +110,7 @@ function poll() {
         flot_data_object['label']=report.devices[dev].displayName;
 
         //set color
-        //temp hard code to blue for now
-        flot_data_object['color']='blue';
+        flot_data_object['color']=report.devices[dev].color;
 
         //set data
         data = report.devices[dev].data;
@@ -138,7 +137,7 @@ function poll() {
 
       }
 
-      console.log(JSON.stringify(flot_data));
+      //console.log(JSON.stringify(flot_data));
       return flot_data;
     }
 
@@ -155,7 +154,7 @@ function poll() {
 								mode: "time",
 								timezone: "browser",
 								timeformat:"%h:%M:%S",
-								min: Date.now()-30*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
+								min: Date.now()-5*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
 								max: Date.now()
 				},
 				"lines": {"show": "true"},
