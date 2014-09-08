@@ -175,14 +175,14 @@ function poll() {
 
       //loop over all devices
       for (var dev in report.devices){
-        flot_data_object[dev]={};
+        flot_data_object={};
 
         //set label
-        flot_data_object[dev]['label']=report.devices[dev].displayName;
+        flot_data_object['label']=report.devices[dev].displayName;
 
         //set color
         //temp hard code to blue for now
-        flot_data_object[dev]['color']='blue';
+        flot_data_object['color']='blue';
 
         //set data
         data = report.devices[dev].data;
@@ -202,15 +202,13 @@ function poll() {
         }
 
         //add data array to flot_data_object
-        flot_data_object[dev]['data']=data_array;
+        flot_data_object['data']=data_array;
       }
-
-      console.log(JSON.stringify(flot_data_object.d1));
-      console.log(flot_data_object);
 
       //pack JSON object into array (necessary for flot)
       flot_data.push(flot_data_object);
 
+      //console.log(JSON.stringify(flot_data));
       return flot_data;
     }
 
@@ -219,7 +217,6 @@ function poll() {
 
 		//fill checkboxes
 		//fillCheckboxDiv(report);
-
 
 		//plot it all!
 		$.plot($("#placeholder"),flot_data, {
