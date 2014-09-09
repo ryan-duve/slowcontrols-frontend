@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Flowmeters</title>
+	<title></title>
 	<link href="css/style.css" rel="stylesheet" type="text/css">
 	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
 	<script language="javascript" type="text/javascript" src="js/jquery.js"></script>
@@ -11,6 +11,14 @@
 	<script language="javascript" type="text/javascript" src="js/slowcontrolfrontend.js"></script>
 
   <script>
+    //title!
+    var title="Fridge Temperatures";
+
+    $(function (){
+      document.title=title;
+      $('#graph-title').text(title);
+    });
+
     function getReportParams(){
       var reportparams={};
       reportparams['incomingDevs']=[];
@@ -22,7 +30,7 @@
 
 </head>
 <body>
-<center><h2>Flow Meters (SLPM)</h2></center>
+  <center><h2><span id="graph-title"></span></h2></center>
 	<div id="content">
 		<div class="graph-container">
 			<div id="placeholder" class="graph-placeholder" style="float:left; width:675px;"></div>
