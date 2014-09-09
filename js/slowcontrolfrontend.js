@@ -98,130 +98,6 @@ function poll() {
         }
       ]
      */
-    function constructFlotDataFromReport(report){
-      //flot_data is what is passed to $.plot
-      var flot_data=[];
-
-      //flot data object is set to flot_data[0] per flot API
-      var flot_data_object={};
-
-      //loop over all devices
-      for (var dev in report.devices){
-        //check if dev checkbox is unchecked (i.e., we don't want it in the data stream)
-        if($('#statuscheckbox-'+dev).length){
-          checked=$('#statuscheckbox-'+dev).is(':checked');
-          //skip data set if checkbox isn't checked
-          if(!checked){
-            continue;
-          }
-        }
-
-
-        flot_data_object={};
-
-        //set label
-        flot_data_object['label']=report.devices[dev].displayName;
-
-        //set color
-        flot_data_object['color']=report.devices[dev].color;
-
-        //set data
-        data = report.devices[dev].data;
-
-        //make array out of dev's JSON data in report
-        //data_array returns as [ [u,v],[w,x],[y,z] ]
-        var data_array=[];
-        for(var i=0;i<data.length;++i){
-          //make a data point (x,y) from dev report data
-          //data_point returns as [u,v]
-          data_point=[];
-          data_point.push(data[i]["created_at"]);
-          data_point.push(data[i]["measurement_reading"]);
-
-          //add data point to data array
-          data_array.push(data_point);
-        }
-
-        //add data array to flot_data_object
-        flot_data_object['data']=data_array;
-
-        //pack JSON object into array (necessary for flot)
-        flot_data.push(flot_data_object);
-
-      }
-
-      //console.log(JSON.stringify(flot_data));
-      return flot_data;
-    }
-
-    function updateStatusBoxes(report){
-      //get device names
-      var deviceReadings={};
-      for(var dev in report.devices){
-        deviceReadings[dev]=null;
-      }
-
-      //get device last data point
-      for(var dev in deviceReadings){
-        lastreading=report.devices[dev]["data"][0]["measurement_reading"];
-        //format to 2 decimal points
-        lastreading=parseFloat(lastreading).toFixed(2);
-        deviceReadings[dev]=lastreading;
-      }
-
-      //create status boxes (if doesn't exist)
-      for(var dev in deviceReadings){
-
-        //make statusbox HTML if it doesn't exist
-        if($("#statusbox-"+dev).length==0){
-          makeStatusBox(dev);
-
-          //set units
-          units=report.devices[dev]["units"];
-          $("#lastreadingunits-"+dev).text(units);
-
-          //set bgcolor
-          bgcolor=report.devices[dev]["color"];
-          $("#statusbox-"+dev).css('background',bgcolor);
-        }
-
-      }
-
-      //update status boxes
-      for(var dev in deviceReadings){
-        //update last data point in status box
-        $("#lastreading-"+dev).text(deviceReadings[dev]);
-      }
-    }
-
-    //return html for making a status box
-    function makeStatusBox(dev){
-      //status box
-      $('<div/>',{
-        id:'statusbox-'+dev,
-        class:'statusbox'
-      }).appendTo('#statusboxlist');
-
-      //checkbox
-      $('#statusbox-'+dev).append($('<input>',{
-        type:'checkbox',
-        id:'statuscheckbox-'+dev,
-        checked:'checked'
-      }));
-
-      //reading in statusbox
-      $('<span/>',{
-        id:'lastreading-'+dev,
-        class:'lastreading'
-      }).appendTo('#statusbox-'+dev);
-
-      //units in statusbox
-      $('<span/>',{
-        id:'lastreadingunits-'+dev,
-        class:'lastreadingunits'
-      }).appendTo('#statusbox-'+dev);
-
-    }
 
 	  //make flot data array out of report
 	  flot_data = constructFlotDataFromReport(report);
@@ -246,6 +122,131 @@ function poll() {
 				"legend": {"position":"nw"}
 			});
 	}
+
+  function constructFlotDataFromReport(report){
+    //flot_data is what is passed to $.plot
+    var flot_data=[];
+
+    //flot data object is set to flot_data[0] per flot API
+    var flot_data_object={};
+
+    //loop over all devices
+    for (var dev in report.devices){
+      //check if dev checkbox is unchecked (i.e., we don't want it in the data stream)
+      if($('#statuscheckbox-'+dev).length){
+        checked=$('#statuscheckbox-'+dev).is(':checked');
+        //skip data set if checkbox isn't checked
+        if(!checked){
+          continue;
+        }
+      }
+
+
+      flot_data_object={};
+
+      //set label
+      flot_data_object['label']=report.devices[dev].displayName;
+
+      //set color
+      flot_data_object['color']=report.devices[dev].color;
+
+      //set data
+      data = report.devices[dev].data;
+
+      //make array out of dev's JSON data in report
+      //data_array returns as [ [u,v],[w,x],[y,z] ]
+      var data_array=[];
+      for(var i=0;i<data.length;++i){
+        //make a data point (x,y) from dev report data
+        //data_point returns as [u,v]
+        data_point=[];
+        data_point.push(data[i]["created_at"]);
+        data_point.push(data[i]["measurement_reading"]);
+
+        //add data point to data array
+        data_array.push(data_point);
+      }
+
+      //add data array to flot_data_object
+      flot_data_object['data']=data_array;
+
+      //pack JSON object into array (necessary for flot)
+      flot_data.push(flot_data_object);
+
+    }
+
+    //console.log(JSON.stringify(flot_data));
+    return flot_data;
+  }
+
+  //return html for making a status box
+  function makeStatusBox(dev){
+    //status box
+    $('<div/>',{
+      id:'statusbox-'+dev,
+      class:'statusbox'
+    }).appendTo('#statusboxlist');
+
+    //checkbox
+    $('#statusbox-'+dev).append($('<input>',{
+      type:'checkbox',
+      id:'statuscheckbox-'+dev,
+      checked:'checked'
+    }));
+
+    //reading in statusbox
+    $('<span/>',{
+      id:'lastreading-'+dev,
+      class:'lastreading'
+    }).appendTo('#statusbox-'+dev);
+
+    //units in statusbox
+    $('<span/>',{
+      id:'lastreadingunits-'+dev,
+      class:'lastreadingunits'
+    }).appendTo('#statusbox-'+dev);
+
+  }
+
+  function updateStatusBoxes(report){
+    //get device names
+    var deviceReadings={};
+    for(var dev in report.devices){
+      deviceReadings[dev]=null;
+    }
+
+    //get device last data point
+    for(var dev in deviceReadings){
+      lastreading=report.devices[dev]["data"][0]["measurement_reading"];
+      //format to 2 decimal points
+      lastreading=parseFloat(lastreading).toFixed(2);
+      deviceReadings[dev]=lastreading;
+    }
+
+    //create status boxes (if doesn't exist)
+    for(var dev in deviceReadings){
+
+      //make statusbox HTML if it doesn't exist
+      if($("#statusbox-"+dev).length==0){
+        makeStatusBox(dev);
+
+        //set units
+        units=report.devices[dev]["units"];
+        $("#lastreadingunits-"+dev).text(units);
+
+        //set bgcolor
+        bgcolor=report.devices[dev]["color"];
+        $("#statusbox-"+dev).css('background',bgcolor);
+      }
+
+    }
+
+    //update status boxes
+    for(var dev in deviceReadings){
+      //update last data point in status box
+      $("#lastreading-"+dev).text(deviceReadings[dev]);
+    }
+  }
   console.log(JSON.stringify(getReportParams()));
 
 	//make ajax call for report
