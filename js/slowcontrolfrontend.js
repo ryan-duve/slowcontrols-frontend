@@ -52,11 +52,11 @@ function poll() {
               "units": "arbs",
               "data": [
                 {
-                  "raw_reading": "2.2968",
+                  "measurement_reading": "2.2968",
                   "created_at": "2014-07-03 10:22:25"
                 },
                 {
-                  "raw_reading": "2.1643",
+                  "measurement_reading": "2.1643",
                   "created_at": "2014-07-03 10:22:24"
                 }
               ]
@@ -66,11 +66,11 @@ function poll() {
               "units": "arbs",
               "data": [
                 {
-                  "raw_reading": "0.0003",
+                  "measurement_reading": "0.0003",
                   "created_at": "2014-07-03 10:22:25"
                 },
                 {
-                  "raw_reading": "0.0003",
+                  "measurement_reading": "0.0003",
                   "created_at": "2014-07-03 10:22:24"
                 }
               ]
@@ -136,7 +136,7 @@ function poll() {
           //data_point returns as [u,v]
           data_point=[];
           data_point.push(data[i]["created_at"]);
-          data_point.push(data[i]["raw_reading"]);
+          data_point.push(data[i]["measurement_reading"]);
 
           //add data point to data array
           data_array.push(data_point);
@@ -163,7 +163,7 @@ function poll() {
 
       //get device last data point
       for(var dev in deviceReadings){
-        lastreading=report.devices[dev]["data"][0]["raw_reading"];
+        lastreading=report.devices[dev]["data"][0]["measurement_reading"];
         //format to 2 decimal points
         lastreading=parseFloat(lastreading).toFixed(2);
         deviceReadings[dev]=lastreading;

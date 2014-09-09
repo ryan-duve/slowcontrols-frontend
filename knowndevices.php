@@ -8,7 +8,7 @@ $KNOWN_DEVICES=array(
   "evapSi"=>array(
     "displayName"=>"Evaporator Si",
     "units"=>"K",
-    "table"=>"lakeshore218s1",
+    "table"=>"slowcontrolreadings",
     "color"=>"red",
   ),
   "mcSi"=>array(
