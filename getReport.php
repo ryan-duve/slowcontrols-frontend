@@ -2,27 +2,18 @@
 
 include('SlowControlReporter.php');
 
-function fakeIncomingData(){
-				$incomingDevList=[];
-				$incomingDevList["incomingDevs"]=[];
-				//array_push($incomingDevList["incomingDevs"],'evapSi');
-				//array_push($incomingDevList["incomingDevs"],'mcSi');
-				//array_push($incomingDevList["incomingDevs"],'IVCpressure');
-				//array_push($incomingDevList["incomingDevs"],'d4');
-				array_push($incomingDevList["incomingDevs"],'d0');
-				array_push($incomingDevList["incomingDevs"],'d1');
-				$incomingDevList["nData"]="9";
-				return $incomingDevList;
+function getIncomingData(){
+  $incomingDevList["nData"]=$_POST['nData'];
+  $incomingDevList["incomingDevs"]=$_POST['incomingDevs'];
+  return $incomingDevList;
 }
-
-
 
 //******************************************************************************
 //START PROGRAM
 //******************************************************************************
 
 //simulate incoming data
-$incomingData=fakeIncomingData();
+$incomingData=getIncomingData();
 
 //instantiate new reporter
 $SCR = new SlowControlReporter();
@@ -44,5 +35,3 @@ foreach($SCR->getDeviceList() as $dev){
 
 //echo query response
 $SCR->echoReport();
-
-

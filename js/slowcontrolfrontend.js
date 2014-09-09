@@ -246,11 +246,13 @@ function poll() {
 				"legend": {"position":"nw"}
 			});
 	}
+  console.log(JSON.stringify(getReportParams()));
 
 	//make ajax call for report
 	$.ajax({
 					url:"getReport.php",
-					type:"GET",
+					type:"POST",
+          data:getReportParams(),
 					dataType:"json",
 					success: onReportReceived
 	});
