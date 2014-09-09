@@ -195,10 +195,10 @@ class SlowControlReporter{
     $table=$this->getTableForDevice($dev);
 		$lim=$this->getNData();
      
-    //$STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL :lim SECOND) AND NOW()) ORDER BY id DESC");
+    $STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL :lim MINUTE) AND NOW()) ORDER BY id DESC");
 
 		//temporary query!  Uses last few entries instead of time since we are not writing to Hifrost.org yet
-    $STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev  ORDER BY id DESC LIMIT :lim");
+    //$STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev  ORDER BY id DESC LIMIT :lim");
     $STH->bindParam(':dev',$dev,PDO::PARAM_STR);
     $STH->bindParam(':lim',$lim,PDO::PARAM_INT);
 

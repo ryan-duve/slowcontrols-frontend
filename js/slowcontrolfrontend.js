@@ -107,6 +107,9 @@ function poll() {
     //make status boxes if they do not exists
     updateStatusBoxes(report);
 
+    //plot time
+    plotTime=$("#nData-input-text").val();
+
 		//plot it all!
 		$.plot($("#placeholder"),flot_data, {
 				yaxis: {},
@@ -114,7 +117,7 @@ function poll() {
 								mode: "time",
 								timezone: "browser",
 								timeformat:"%h:%M:%S",
-								min: Date.now()-5*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
+								min: Date.now()-plotTime*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
 								max: Date.now()
 				},
 				"lines": {"show": "true"},
@@ -152,6 +155,9 @@ function poll() {
 
       //set data
       data = report.devices[dev].data;
+
+      //continue if no data
+      console.log(data.length);
 
       //make array out of dev's JSON data in report
       //data_array returns as [ [u,v],[w,x],[y,z] ]
