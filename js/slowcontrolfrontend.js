@@ -15,6 +15,11 @@ $(function() {
     }
   });
 
+  //allow only 0-9 entered in text field
+  $("#nData-input-text").keypress(function(event) {
+    return /\d/.test(String.fromCharCode(event.keyCode));
+  });
+
   //initial poll for data
   poll();
 });
