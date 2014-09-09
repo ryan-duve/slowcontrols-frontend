@@ -157,7 +157,9 @@ function poll() {
       data = report.devices[dev].data;
 
       //continue if no data
-      console.log(data.length);
+      if(data.length==0){
+        continue;
+      }
 
       //make array out of dev's JSON data in report
       //data_array returns as [ [u,v],[w,x],[y,z] ]
@@ -223,10 +225,16 @@ function poll() {
 
     //get device last data point
     for(var dev in deviceReadings){
-      lastreading=report.devices[dev]["data"][0]["measurement_reading"];
-      //format to 2 decimal points
-      lastreading=parseFloat(lastreading).toFixed(2);
-      deviceReadings[dev]=lastreading;
+      if(report.devices[dev]["data"].length==0){
+        //if no data, last reading error 
+        deviceReadings[dev]="--NaN--";
+      }else{
+        //set lastreading to newest data point value
+        lastreading=report.devices[dev]["data"][0]["measurement_reading"];
+        //format to 2 decimal points
+        lastreading=parseFloat(lastreading).toFixed(2);
+        deviceReadings[dev]=lastreading;
+      }
     }
 
     //create status boxes (if doesn't exist)
@@ -250,9 +258,15 @@ function poll() {
     //update status boxes
     for(var dev in deviceReadings){
       //update last data point in status box
-      $("#lastreading-"+dev).text(deviceReadings[dev]);
+      updateStatusBox(dev,deviceReadings[dev]);
     }
   }
+
+  //takes device name and reading and populates status box
+  function updateStatusBox(dev,reading){
+    $("#lastreading-"+dev).text(reading);
+  }
+
   console.log(JSON.stringify(getReportParams()));
 
 	//make ajax call for report
