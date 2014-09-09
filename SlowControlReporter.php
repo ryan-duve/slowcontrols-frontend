@@ -15,7 +15,7 @@ class SlowControlReporter{
   protected $queryResponse=[];
   protected $report=[];
   protected $DBH=null;//database handler
-  protected $MAXNDATA=50;
+  protected $MAXNDATA=50000;
   protected $knownDevices=null;
 
   //import known devices from external file
