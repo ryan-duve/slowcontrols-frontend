@@ -1,4 +1,20 @@
 $(function() {
+
+  //bind enter press on nData input to hidden field value
+  $("#nData-input-text").bind("enterKey",function(e){
+    //enter pressed
+    //disable input value
+    $("#nData-input-text").prop('disabled',true);
+    //copy input value to hidden value
+    $("#nData-value").val($("#nData-input-text").val());
+  });
+
+  $("#nData-input-text").keyup(function(e){
+    if(e.keyCode==13){
+      $(this).trigger("enterKey");
+    }
+  });
+
   //initial poll for data
   poll();
 });
@@ -108,7 +124,10 @@ function poll() {
     updateStatusBoxes(report);
 
     //plot time
-    plotTime=$("#nData-input-text").val();
+    plotTime=$("#nData-value").val();
+
+    //enable input value
+    $("#nData-input-text").prop('disabled',false);
 
 		//plot it all!
 		$.plot($("#placeholder"),flot_data, {
@@ -279,5 +298,5 @@ function poll() {
 	});
 
 	//delay before polling self again
-	setTimeout(poll,5000);
+	setTimeout(poll,1000);
 }
