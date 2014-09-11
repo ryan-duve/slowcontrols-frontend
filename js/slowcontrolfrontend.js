@@ -295,7 +295,7 @@ function poll() {
 
 	//make ajax call for report
 	$.ajax({
-					url:"getReport.php",
+					url:"../slowcontrols/getReport.php",
 					type:"POST",
           data:getReportParams(),
 					dataType:"json",
