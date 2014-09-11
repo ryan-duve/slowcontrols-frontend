@@ -29,6 +29,12 @@ $KNOWN_DEVICES=array(
     "table"=>"slowcontrolreadings",
     "color"=>"gold",
   ),
+  "he3Pressure"=>array(
+    "displayName"=>"He-3",
+    "units"=>"mbar",
+    "table"=>"slowcontrolreadings",
+    "color"=>"gray",
+  ),
   "evapPressureMv110"=>array(
     "displayName"=>"Evap",
     "units"=>"mbar",
