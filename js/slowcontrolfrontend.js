@@ -228,17 +228,29 @@ function poll() {
       checked:'checked'
     }));
 
+    //device name to label the status box
+    $('<span/>',{
+      id:'devnamelabel-'+dev,
+      class:'devnamelabel'
+    }).appendTo('#statusbox-'+dev);
+
+    //reading wrapper (contains reading + units)
+    $('<span/>',{
+      id:'lastreadingwrapper-'+dev,
+      class:'lastreadingwrapper'
+    }).appendTo('#statusbox-'+dev);
+
     //reading in statusbox
     $('<span/>',{
       id:'lastreading-'+dev,
       class:'lastreading'
-    }).appendTo('#statusbox-'+dev);
+    }).appendTo('#lastreadingwrapper-'+dev);
 
     //units in statusbox
     $('<span/>',{
       id:'lastreadingunits-'+dev,
       class:'lastreadingunits'
-    }).appendTo('#statusbox-'+dev);
+    }).appendTo('#lastreadingwrapper-'+dev);
 
   }
 
@@ -269,6 +281,10 @@ function poll() {
       //make statusbox HTML if it doesn't exist
       if($("#statusbox-"+dev).length==0){
         makeStatusBox(dev);
+
+        //set name
+        devname=report.devices[dev]["displayName"];
+        $("#devnamelabel-"+dev).text(devname);
 
         //set units
         units=report.devices[dev]["units"];

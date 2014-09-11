@@ -93,7 +93,11 @@ input[type=checkbox] {
 .legend table {
   border-spacing: 5px;
 }
-.lastReading{
+.lastreadingwrapper{
   text-align: center;
+  display:block;
 }
 
+.lastreadingunits{
+  margin-left:2px;
+}
