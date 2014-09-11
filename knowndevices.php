@@ -17,11 +17,17 @@ $KNOWN_DEVICES=array(
     "table"=>"lakeshore218s1",
     "color"=>"blue",
   ),
-  "IVCpressure"=>array(
-    "displayName"=>"IVC pressure",
+  "OVCPressure"=>array(
+    "displayName"=>"OVC Pressure",
     "units"=>"mbar",
-    "table"=>"pfeiffertpg262",
-    "color"=>"black",
+    "table"=>"slowcontrolreadings",
+    "color"=>"red",
+  ),
+  "IVCPressure"=>array(
+    "displayName"=>"IVC Pressure",
+    "units"=>"mbar",
+    "table"=>"slowcontrolreadings",
+    "color"=>"gold",
   ),
   "evapPressureMv110"=>array(
     "displayName"=>"Evaporator Pressure",
