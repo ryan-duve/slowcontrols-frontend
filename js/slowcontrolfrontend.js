@@ -18,6 +18,8 @@ $(function() {
     },
   });
 
+  //words
+  $("#nData-preview-text").before("Plot history: ").after("minutes");
 
   //initial poll for data
   poll();
