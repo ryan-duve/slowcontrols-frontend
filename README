@@ -1,0 +1,74 @@
+SlowControlReporter takes a few parameters hard coded in an index.html file and uses them to populate a strip chart.
+
+js logic is in /var/www/slowcontrols/js/slowcontrols.js, html params are in /var/www/{instrument name}/index.html and look like
+
+    var title="Flows"; //set this
+
+    function getReportParams(){
+      ...
+      reportparams['incomingDevs'].push('evapFlow');   // set these
+      reportparams['incomingDevs'].push('sepFlow');    // set these
+      reportparams['incomingDevs'].push('shieldFlow'); // set these
+      reportparams['incomingDevs'].push('he3Flow');    // set these
+      ...
+    };
+
+The definitions of 'evapFlow' et al are in knowndevices.php, which holds an associative array with the necessary properties for the Reporter and Flot to use (hoepfully the properties are obvious).
+
+An ajax call to getReport.php instantiates a SlowControlReporter.  The "report" is a PHP associative array exported to JSON for the plotting package Flot to parse and use.  The conversion looks like:
+
+    /* php report format:
+        {
+          "devices": {
+            "d0": {
+              "displayName": "dee o",
+              "units": "arbs",
+              "data": [
+                {
+                  "measurement_reading": "2.2968",
+                  "created_at": "2014-07-03 10:22:25"
+                },
+                {
+                  "measurement_reading": "2.1643",
+                  "created_at": "2014-07-03 10:22:24"
+                }
+              ]
+            },
+            "d1": {
+              "displayName": "dee un",
+              "units": "arbs",
+              "data": [
+                {
+                  "measurement_reading": "0.0003",
+                  "created_at": "2014-07-03 10:22:25"
+                },
+                {
+                  "measurement_reading": "0.0003",
+                  "created_at": "2014-07-03 10:22:24"
+                }
+              ]
+             }
+          }
+        }
+
+      flot data object format:      
+      var data=[
+        {
+          "label":"dee o",
+          "color":"blue",
+          "data":[
+                  ["1410179062000","2.2968"],
+                  ["1410179072000","2.1643"]
+                 ]
+        },
+        {
+          "label":"dee o",
+          "color":"red",
+          "data":[
+                  ["1410179082000","0.0003"],
+                  ["1410179092000","0.0003"]
+                 ]
+        }
+      ]
+     */
+
