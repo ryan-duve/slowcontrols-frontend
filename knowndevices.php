@@ -6,7 +6,7 @@
 
 $KNOWN_DEVICES=array(
   "evapSi"=>array(
-    "displayName"=>"Evaporator Si",
+    "displayName"=>"Evap Si",
     "units"=>"K",
     "table"=>"slowcontrolreadings",
     "color"=>"red",
@@ -18,19 +18,19 @@ $KNOWN_DEVICES=array(
     "color"=>"blue",
   ),
   "OVCPressure"=>array(
-    "displayName"=>"OVC Pressure",
+    "displayName"=>"OVC",
     "units"=>"mbar",
     "table"=>"slowcontrolreadings",
     "color"=>"red",
   ),
   "IVCPressure"=>array(
-    "displayName"=>"IVC Pressure",
+    "displayName"=>"IVC",
     "units"=>"mbar",
     "table"=>"slowcontrolreadings",
     "color"=>"gold",
   ),
   "evapPressureMv110"=>array(
-    "displayName"=>"Evaporator Pressure",
+    "displayName"=>"Evap",
     "units"=>"mbar",
     "table"=>"slowcontrolreadings",
     "color"=>"cyan",
