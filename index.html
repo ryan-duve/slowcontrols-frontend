@@ -4,11 +4,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title></title>
 	<link href="css/style.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
 	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
 	<script language="javascript" type="text/javascript" src="js/jquery.js"></script>
 	<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
 	<script language="javascript" type="text/javascript" src="js/slowcontrolfrontend.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
 
   <script>
     //title!
@@ -36,11 +38,11 @@
 			<div id="placeholder" class="graph-placeholder" style="float:left; width:675px;"></div>
 			<p id="statusboxlist" style="float:right; width:135px;"></p>
 		</div>
-    <div id="nData-input-wrapper">Plot history:
-      <input type="number" min="1" id="nData-input-text" value="60" />
-      <input type="hidden" id="nData-value" value="60" />
-      minutes
+    <div id="nData-input-wrapper">
+      <span id="nData-preview-text"></span>
+      <input type="hidden" id="nData-value" value="60" /> minutes
     </div>
+    <div id="slider"></div>
 	</div>
 </body>
 </html>

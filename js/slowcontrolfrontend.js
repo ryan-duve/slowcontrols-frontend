@@ -1,24 +1,23 @@
 $(function() {
 
-  //bind enter press on nData input to hidden field value
-  $("#nData-input-text").bind("enterKey",function(e){
-    //enter pressed
-    //disable input value
-    $("#nData-input-text").prop('disabled',true);
-    //copy input value to hidden value
-    $("#nData-value").val($("#nData-input-text").val());
+  var initialPlotTime=60;
+  $("#nData-preview-text").html(initialPlotTime);
+  $("#nData-value").val(initialPlotTime);
+
+  //slider
+  $("#slider").slider({
+    min:1,
+    max:500,
+    value:20,
+    slide:function(event,ui){
+      $("#nData-preview-text").html(ui.value);
+    },
+    stop:function(event,ui){
+      $("#nData-value").val(ui.value);
+      $("#slider").slider("option","disabled",true);
+    },
   });
 
-  $("#nData-input-text").keyup(function(e){
-    if(e.keyCode==13){
-      $(this).trigger("enterKey");
-    }
-  });
-
-  //allow only 0-9 entered in text field
-  $("#nData-input-text").keypress(function(event) {
-    return /\d/.test(String.fromCharCode(event.keyCode));
-  });
 
   //initial poll for data
   poll();
@@ -131,8 +130,9 @@ function poll() {
     //plot time
     plotTime=$("#nData-value").val();
 
-    //enable input value
-    $("#nData-input-text").prop('disabled',false);
+    //enable slider
+    $("#slider").slider("option","disabled",false);
+    
 
 		//plot it all!
 		$.plot($("#placeholder"),flot_data, {
