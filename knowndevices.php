@@ -35,6 +35,12 @@ $KNOWN_DEVICES=array(
     "table"=>"slowcontrolreadings",
     "color"=>"gray",
   ),
+  "evapPressureCm330"=>array(
+    "displayName"=>"Evap",
+    "units"=>"mbar",
+    "table"=>"slowcontrolreadings",
+    "color"=>"brown",
+  ),
   "evapPressureMv110"=>array(
     "displayName"=>"Evap",
     "units"=>"mbar",
