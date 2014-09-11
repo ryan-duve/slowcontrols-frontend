@@ -1,6 +1,6 @@
 $(function() {
 
-  var initialPlotTime=60;
+  var initialPlotTime=20;
   $("#nData-preview-text").html(initialPlotTime);
   $("#nData-value").val(initialPlotTime);
 
@@ -19,7 +19,7 @@ $(function() {
   });
 
   //words
-  $("#nData-preview-text").before("Plot history: ").after("minutes");
+  $("#nData-preview-text").before("Plot history: ").after(" minutes");
 
   //initial poll for data
   poll();
