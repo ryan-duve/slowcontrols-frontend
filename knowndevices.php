@@ -23,22 +23,34 @@ $KNOWN_DEVICES=array(
     "table"=>"pfeiffertpg262",
     "color"=>"black",
   ),
-  "d4"=>array(
-    "displayName"=>"dee fo'",
-    "units"=>"dillobars",
-    "table"=>"usb1608g",
+  "evapPressureMv110"=>array(
+    "displayName"=>"Evaporator Pressure",
+    "units"=>"mbar",
+    "table"=>"slowcontrolreadings",
     "color"=>"cyan",
   ),
-  "d0"=>array(
-    "displayName"=>"dee o",
-    "units"=>"arbs",
+  "sepFlow"=>array(
+    "displayName"=>"Separator Flow",
+    "units"=>"SLPM",
+    "table"=>"slowcontrolreadings",
+    "color"=>"blue",
+  ),
+  "shieldFlow"=>array(
+    "displayName"=>"Shield Flow",
+    "units"=>"SLPM",
+    "table"=>"slowcontrolreadings",
+    "color"=>"green",
+  ),
+  "he3Flow"=>array(
+    "displayName"=>"He-3 Flow",
+    "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
     "color"=>"orange",
   ),
-  "d1"=>array(
-    "displayName"=>"dee un",
-    "units"=>"arbis",
+  "evapFlow"=>array(
+    "displayName"=>"Evaporator Flow",
+    "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
-    "color"=>"green",
+    "color"=>"pink",
   ),
 );

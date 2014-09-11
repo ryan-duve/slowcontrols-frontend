@@ -14,7 +14,7 @@
 
   <script>
     //title!
-    var title="Fridge Temperatures";
+    var title="Flows";
 
     $(function (){
       document.title=title;
@@ -24,7 +24,10 @@
     function getReportParams(){
       var reportparams={};
       reportparams['incomingDevs']=[];
-      reportparams['incomingDevs'].push('evapSi');
+      reportparams['incomingDevs'].push('evapFlow');
+      reportparams['incomingDevs'].push('sepFlow');
+      reportparams['incomingDevs'].push('shieldFlow');
+      reportparams['incomingDevs'].push('he3Flow');
       reportparams['nData']=$("#nData-value").val();
       return reportparams;
     };
