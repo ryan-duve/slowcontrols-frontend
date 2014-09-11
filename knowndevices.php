@@ -36,7 +36,7 @@ $KNOWN_DEVICES=array(
     "color"=>"cyan",
   ),
   "sepFlow"=>array(
-    "displayName"=>"Separator Flow",
+    "displayName"=>"Sep Flow",
     "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
     "color"=>"blue",
@@ -54,7 +54,7 @@ $KNOWN_DEVICES=array(
     "color"=>"orange",
   ),
   "evapFlow"=>array(
-    "displayName"=>"Evaporator Flow",
+    "displayName"=>"Evap Flow",
     "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
     "color"=>"pink",
