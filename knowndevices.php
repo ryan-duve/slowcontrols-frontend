@@ -39,7 +39,7 @@ $KNOWN_DEVICES=array(
     "displayName"=>"Sep Flow",
     "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
-    "color"=>"blue",
+    "color"=>"red",
   ),
   "shieldFlow"=>array(
     "displayName"=>"Shield Flow",
@@ -58,5 +58,11 @@ $KNOWN_DEVICES=array(
     "units"=>"SLPM",
     "table"=>"slowcontrolreadings",
     "color"=>"pink",
+  ),
+  "100ldlevel"=>array(
+    "displayName"=>"100LD",
+    "units"=>"L",
+    "table"=>"slowcontrolreadings",
+    "color"=>"teal",
   ),
 );
