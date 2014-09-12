@@ -6,7 +6,7 @@ $(function() {
 
   //slider
   $("#slider").slider({
-    min:1,
+    min:2,
     max:500,
     value:20,
     slide:function(event,ui){
