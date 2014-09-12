@@ -1,10 +1,18 @@
 $(function (){
+
+  //onload, send request for device names
   $.ajax({
     url:"getAvailableDeviceNames.php",
     type:"POST",
     dataType:"json",
     success: onDeviceNamesReceived
   });
+
+  //bind form submission
+  $("#submit").on('click',function(){
+    console.log('submitting form');
+  });
+
 });
 
 function onDeviceNamesReceived(devNames){
