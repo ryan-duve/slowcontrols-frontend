@@ -1,6 +1,6 @@
 $(function() {
 
-  var initialPlotTime=20;
+  var initialPlotTime=5;
   $("#nData-preview-text").html(initialPlotTime);
   $("#nData-value").val(initialPlotTime);
 
