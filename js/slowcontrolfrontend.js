@@ -150,7 +150,20 @@ function poll() {
 				"points": {"show": "true"},
 				"legend": {"position":"nw"}
 			});
+
+  	//make ajax call for report
+    setTimeout(callAjax,1000);
 	}
+
+  function callAjax(){
+  	$.ajax({
+  					url:"../slowcontrols/getReport.php",
+  					type:"POST",
+            data:getReportParams(),
+  					dataType:"json",
+  					success: onReportReceived
+  	});
+  }
 
   function constructFlotDataFromReport(report){
     //flot_data is what is passed to $.plot
@@ -311,15 +324,6 @@ function poll() {
 
   console.log(JSON.stringify(getReportParams()));
 
-	//make ajax call for report
-	$.ajax({
-					url:"../slowcontrols/getReport.php",
-					type:"POST",
-          data:getReportParams(),
-					dataType:"json",
-					success: onReportReceived
-	});
-
-	//delay before polling self again
-	setTimeout(poll,1000);
+	//make initial ajax call for report
+  callAjax();
 }
