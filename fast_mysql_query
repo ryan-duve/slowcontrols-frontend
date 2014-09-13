@@ -1,0 +1,24 @@
+#run this query in mysql and watch how fast it pulls out 100 intermitently spaced rows out of the past 500 minutes of data
+#http://dba.stackexchange.com/questions/56168/select-every-n-th-row-dont-pull-the-entire-table
+
+
+set @row:=-1;
+set @nMatchingRows = (SELECT COUNT(*) from  slowcontrolreadings  WHERE device='evapSi' AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL 500 MINUTE) AND NOW()));
+set @moddy = CEILING(@nMatchingRows/100);
+SELECT slowcontrolreadings.*
+FROM
+    slowcontrolreadings
+    INNER JOIN
+    (
+        SELECT id
+        FROM
+            (
+                SELECT @row:=@row+1 AS rownum, id 
+                FROM
+                    (
+                        SELECT id FROM slowcontrolreadings  WHERE device='evapSi' AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL 1 MINUTE) AND NOW()) ORDER BY id DESC
+                    ) AS sorted
+            ) as ranked
+        WHERE rownum % @moddy= 0
+    ) AS subset
+        ON subset.id = slowcontrolreadings.id;
