@@ -15,7 +15,7 @@ class SlowControlReporter{
   protected $queryResponse=[];
   protected $report=[];
   protected $DBH=null;//database handler
-  protected $MAXNDATA=1000;//max minutes on strip chart
+  protected $MAXNDATA=100;//max minutes on strip chart
   protected $knownDevices=null;
 
   //import known devices from external file
