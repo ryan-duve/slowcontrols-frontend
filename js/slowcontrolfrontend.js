@@ -183,7 +183,6 @@ function poll() {
         }
       }
 
-
       flot_data_object={};
 
       //set label
