@@ -3,35 +3,49 @@
     <script src="http://hfgx620.tunl.daq/slowcontrols/js/jquery.js"></script>
     <script src="js/slowcontroldatarequester.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/form.css" rel="stylesheet" type="text/css">
   </head>
   <body>
+    <div class="container">
+      <form id="form" class="form-data form-horizontal">
+        <fieldset>
+          <legend>Select a device, number of minutes of data (from present time) and email address to send data file once processed.</legend>
 
-    Select a device, number of minutes of data (from present time) and email address to send data file once processed.
+          <div class="control-group">
+            <label for="devNameSelectionWrapper" class="control-label">
+              Device:
+            </label>
+            <div id="devNameSelectionWrapper" class="controls">
+            </div>
+          </div>
 
-    <hr />
+          <div class="control-group">
+            <label class="control-label" for="begTime">Beginning Time:</label>
+            <div class="controls">
+              <input type="text" id="begTime" class="form-control"></input>
+            </div>
+          </div>
 
-    <label for="devNameSelectionWrapper">
-      Device:
-    </label>
-    <div id="devNameSelectionWrapper">
-      <form id="devNameSelectionForm">
+          <div class="control-group">
+            <label class="control-label">End Time:</label>
+            <div class="controls">
+              <input type="text" id="endTime" class="form-control"></input>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Email:</label>
+            <div class="controls">
+              <input type="text" id="email" class="form-control"></input>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <button class="btn  btn-primary btn-block" type="submit">Submit</button>
+          </div>
+        </fieldset>
       </form>
-
-      <br />
-      <label for="email">
-        Email: 
-      </label>
-      <input type="text" id="email"></input>
-      <br />
-      <label for="nDataInput">
-        Minutes of data: 
-      </label>
-      <input type="text" id="nDataInput"></input>
-
-      <div id="submitButton">
-        Submit
-      </div>
-
     </div>
 
   </body>
