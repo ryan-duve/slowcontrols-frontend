@@ -5,6 +5,7 @@ include('SlowControlReporter.php');
 function getIncomingData(){
   $incomingDevList["nData"]=$_POST['nData'];
   $incomingDevList["incomingDevs"]=$_POST['incomingDevs'];
+  $incomingDevList["endTimestamp"]=$_POST['endTimestamp'];
   return $incomingDevList;
 }
 
@@ -17,6 +18,10 @@ $incomingData=getIncomingData();
 
 //instantiate new reporter
 $SCR = new SlowControlReporter();
+
+//sanitize incoming endTimestamp or fail
+$cleanEndTimestamp=$SCR->sanitizeEndTimestamp($incomingData["endTimestamp"]);
+$SCR->setEndTimestamp($cleanEndTimestamp);
 
 //sanitize incoming nData or fail
 $cleanNData=$SCR->sanitizeNData($incomingData["nData"]);

@@ -12,6 +12,7 @@
 class SlowControlReporter{
 
   protected $nData=0;
+  protected $endTimestamp=0;
   protected $queryResponse=[];
   protected $report=[];
   protected $DBH=null;//database handler
@@ -27,6 +28,10 @@ class SlowControlReporter{
 
   public function getDeviceList(){
     return array_keys($this->report["devices"]);
+  }
+
+  public function getEndTimestamp(){
+    return $this->endTimestamp;
   }
 
   public function getNData(){
@@ -67,6 +72,10 @@ class SlowControlReporter{
     }
   }
 
+  public function setEndTimestamp($endTimestamp){
+    $this->endTimestamp=$endTimestamp;
+  }
+
   public function setNData($nData){
     $this->nData=$nData;
   }
@@ -97,6 +106,27 @@ class SlowControlReporter{
     //return nice JSON object
   }
 
+  public function sanitizeEndTimestamp($endTimestamp){
+    //check if endTimestamp is in MySQL format, else return false
+    //http://stackoverflow.com/questions/11510338/regular-expression-to-match-mysql-timestamp-format-y-m-d-hms#12025632
+    $regex="/^(((\d{4})(-)(0[13578]|10|12)(-)(0[1-9]|[12][0-9]|3[01]))|((\d{4})(-)(0[469]|11)(-)([0][1-9]|[12][0-9]|30))|((\d{4})(-)(02)(-)(0[1-9]|1[0-9]|2[0-8]))|(([02468][048]00)(-)(02)(-)(29))|(([13579][26]00)(-)(02)(-)(29))|(([0-9][0-9][0][48])(-)(02)(-)(29))|(([0-9][0-9][2468][048])(-)(02)(-)(29))|(([0-9][0-9][13579][26])(-)(02)(-)(29)))(\s([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]))$/";
+
+    try{
+      if(preg_match($regex,$endTimestamp)){
+        //if timestamp matches mysql
+        return $endTimestamp;
+      }else if($endTimestamp=="now"){
+        //if timestamp is "now", return current timestamp (MySQL format)
+        return date('Y-m-d H:i:s');
+      }else{
+        throw new Exception ("endTimestamp not 'now' or MySQL valid (endTimestamp=$endTimestamp)");
+      }
+    }catch(Exception $e){
+      $this->processException($e);
+    }
+
+    return null;
+  }
   
   public function sanitizeNData($nData){
     //make sure NData is a valid int form or fail
@@ -194,12 +224,14 @@ class SlowControlReporter{
     //STH="statement handler"
     $table=$this->getTableForDevice($dev);
 		$lim=$this->getNData();
+		$endTimestamp=$this->getEndTimestamp();
      
-    $STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(NOW(),INTERVAL :lim MINUTE) AND NOW()) ORDER BY id DESC");
+    $STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(:endTimestamp,INTERVAL :lim MINUTE) AND :endTimestamp) ORDER BY id DESC");
 
 		//temporary query!  Uses last few entries instead of time since we are not writing to Hifrost.org yet
     //$STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev  ORDER BY id DESC LIMIT :lim");
     $STH->bindParam(':dev',$dev,PDO::PARAM_STR);
+    $STH->bindParam(':endTimestamp',$endTimestamp,PDO::PARAM_STR);
     $STH->bindParam(':lim',$lim,PDO::PARAM_INT);
 
     //execute statement
