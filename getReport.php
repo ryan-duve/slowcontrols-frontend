@@ -34,9 +34,9 @@ $SCR->addDevices($incomingData["incomingDevs"]);
 $SCR->fillReportWithData();
 
 //build query response
-foreach($SCR->getDeviceList() as $dev){
-				$SCR->queryDatabase($dev);
-}
+//foreach($SCR->getDeviceList() as $dev){
+//				$SCR->queryDatabase($dev);
+//}
 
 //echo query response
 $SCR->echoReport();
