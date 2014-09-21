@@ -225,13 +225,22 @@ class SlowControlReporter{
     $table=$this->getTableForDevice($dev);
 		$lim=$this->getNData();
 		$endTimestamp=$this->getEndTimestamp();
-     
-    $STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(:endTimestamp,INTERVAL :lim MINUTE) AND :endTimestamp) ORDER BY id DESC");
+
+    //$this->fakeError(var_export(debug_backtrace(),true));
+
+    $prepQuery="SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(\"$endTimestamp\",INTERVAL :lim MINUTE) AND \"$endTimestamp\") ORDER BY id DESC";
+
+    $STH=$this->DBH->prepare($prepQuery);
+
+    $params=[];
+    $params['dev']=$dev;
+    $params['lim']=$lim;
+
+    //$this->fakeError($this->interpolateQuery($prepQuery,$params));
 
 		//temporary query!  Uses last few entries instead of time since we are not writing to Hifrost.org yet
     //$STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev  ORDER BY id DESC LIMIT :lim");
     $STH->bindParam(':dev',$dev,PDO::PARAM_STR);
-    $STH->bindParam(':endTimestamp',$endTimestamp,PDO::PARAM_STR);
     $STH->bindParam(':lim',$lim,PDO::PARAM_INT);
 
     //execute statement
@@ -242,9 +251,30 @@ class SlowControlReporter{
     }
 
     $res=$STH->fetchAll(PDO::FETCH_ASSOC);
-      
+
     return $res;
 
+  }
+
+  #this guy :-D
+  #http://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements#1376838
+  public static function interpolateQuery($query, $params) {
+    $keys = array();
+
+    # build a regular expression for each parameter
+    foreach ($params as $key => $value) {
+      if (is_string($key)) {
+        $keys[] = '/:'.$key.'/';
+      } else {
+        $keys[] = '/[?]/';
+      }
+    }
+
+    $query = preg_replace($keys, $params, $query, 1, $count);
+
+    #trigger_error('replaced '.$count.' keys');
+
+    return $query;
   }
 
   public function addQueryResponse($dev, $res){
