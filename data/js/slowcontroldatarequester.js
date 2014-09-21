@@ -49,11 +49,6 @@ function submitDataRequest(){
 
 }
 
-function onReportReceived(report){
-  console.log("report incoming:");
-  console.log(report);
-}
-
 function getReportParams(nData,dev,endTimestamp){
   var reportparams={};
   reportparams['incomingDevs']=[];
