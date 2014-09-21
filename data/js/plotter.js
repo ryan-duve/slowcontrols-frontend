@@ -95,10 +95,10 @@ function onReportReceived(report){
   flot_data = constructFlotDataFromReport(report);
 
   //plot time
-  //TODO find a new way to get plot min/max
-  //plotTime=$("#nData-value").val();
-  //plotMin=
-  //plotMax=
+  begTimestamp=moment($('#begTime').val());
+  endTimestamp=moment($('#endTime').val());
+  plotMin=begTimestamp.valueOf();
+  plotMax=endTimestamp.valueOf();
 
 	//plot it all!
 	$.plot($("#placeholder"),flot_data, {
