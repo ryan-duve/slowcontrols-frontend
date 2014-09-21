@@ -33,64 +33,6 @@ function onReportReceived(report){
 	//check report for errors
 	handleReportErrors(report);
 
-  //report is a JSON object returned from SlowControlReporter, but not
-  //formatted the necessary way for flot.  constructFlotDataFromReport()
-  //formats the report and returns an array flot can take as a $.plot paramter
-  /* report format:
-      {
-        "devices": {
-          "d0": {
-            "displayName": "dee o",
-            "units": "arbs",
-            "data": [
-              {
-                "measurement_reading": "2.2968",
-                "created_at": "2014-07-03 10:22:25"
-              },
-              {
-                "measurement_reading": "2.1643",
-                "created_at": "2014-07-03 10:22:24"
-              }
-            ]
-          },
-          "d1": {
-            "displayName": "dee un",
-            "units": "arbs",
-            "data": [
-              {
-                "measurement_reading": "0.0003",
-                "created_at": "2014-07-03 10:22:25"
-              },
-              {
-                "measurement_reading": "0.0003",
-                "created_at": "2014-07-03 10:22:24"
-              }
-            ]
-           }
-        }
-      }
-
-    flot data object format:      
-    var data=[
-      {
-        "label":"dee o",
-        "color":"blue",
-        "data":[
-                ["1410179062000","2.2968"],
-                ["1410179072000","2.1643"]
-               ]
-      },
-      {
-        "label":"dee o",
-        "color":"red",
-        "data":[
-                ["1410179082000","0.0003"],
-                ["1410179092000","0.0003"]
-               ]
-      }
-    ]
-   */
-
   //make flot data array out of report
   flot_data = constructFlotDataFromReport(report);
 
