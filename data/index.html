@@ -4,9 +4,13 @@
     <meta content="utf-8" http-equiv="encoding">
     <script src="../js/jquery.js"></script>
     <script src="js/moment-with-locales.min.js"></script>
+    <script language="javascript" type="text/javascript" src="js/flot/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="js/flot/jquery.flot.time.js"></script>
     <script src="js/slowcontroldatarequester.js"></script>
+    <script src="js/plotter.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/form.css" rel="stylesheet" type="text/css">
+    <link href="css/flot.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <div class="container">
@@ -48,6 +52,10 @@
           </div>
         </fieldset>
       </form>
+    </div>
+
+    <div class="graph-container">
+      <div id="placeholder" class="graph-placeholder" style="float:left; width:675px;"></div>
     </div>
 
   </body>
