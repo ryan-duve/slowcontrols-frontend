@@ -83,4 +83,10 @@ $KNOWN_DEVICES=array(
     "table"=>"slowcontrolreadings",
     "color"=>"teal",
   ),
+  "alcatelASM120H"=>array(
+    "displayName"=>"100LD",
+    "units"=>"mbar L/s",
+    "table"=>"alcatelasm120h",
+    "color"=>"orange",
+  ),
 );
