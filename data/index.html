@@ -1,14 +1,16 @@
 <html>
   <head>
-    <script src="http://hfgx620.tunl.daq/slowcontrols/js/jquery.js"></script>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <script src="../js/jquery.js"></script>
+    <script src="js/moment-with-locales.min.js"></script>
     <script src="js/slowcontroldatarequester.js"></script>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/form.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <div class="container">
-      <form id="form" class="form-data form-horizontal">
+      <form id="form" class="form-data form-horizontal" action="#" accept-charset="utf-8">
         <fieldset>
           <legend>Slow Control Data Request Form</legend>
 
@@ -42,7 +44,7 @@
           </div>
 
           <div class="control-group">
-            <button class="btn  btn-primary btn-block" type="submit">Submit</button>
+            <button class="btn  btn-primary btn-block" id="submit">Submit</button>
           </div>
         </fieldset>
       </form>
