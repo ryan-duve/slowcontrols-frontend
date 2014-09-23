@@ -53,7 +53,7 @@ function onReportReceived(report){
 							max: plotMax
 			},
 			"lines": {"show": "true"},
-			"points": {"show": "true"},
+			//"points": {"show": "true"},
 			"legend": {"position":"nw"}
 		});
 }
