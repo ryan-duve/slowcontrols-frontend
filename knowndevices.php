@@ -84,7 +84,7 @@ $KNOWN_DEVICES=array(
     "color"=>"teal",
   ),
   "alcatelASM120H"=>array(
-    "displayName"=>"100LD",
+    "displayName"=>"Leak",
     "units"=>"mbar L/s",
     "table"=>"alcatelasm120h",
     "color"=>"orange",
