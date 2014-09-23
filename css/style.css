@@ -110,3 +110,8 @@ input[type=checkbox] {
   float:left;
   width:18%
 }
+
+#clock{
+  display:inline;
+  margin-left:20px;
+}

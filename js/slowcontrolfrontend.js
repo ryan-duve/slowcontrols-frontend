@@ -21,6 +21,18 @@ $(function() {
   //words
   $("#nData-preview-text").before("Plot history: ").after(" minutes");
 
+  //clock
+  $('<div/>')
+  .attr('id','clock')
+  .html('loading clock...')
+  .insertAfter('#graph-title');
+
+  function update() {
+    $('#clock').html(moment().format('H:mm:ss'));
+  }
+
+  setInterval(update, 1000);
+
   //initial poll for data
   poll();
 });
