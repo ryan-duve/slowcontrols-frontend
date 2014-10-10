@@ -89,4 +89,10 @@ $KNOWN_DEVICES=array(
     "table"=>"alcatelasm120h",
     "color"=>"orange",
   ),
+  "avs47"=>array(
+    "displayName"=>"AVS47",
+    "units"=>"Ω",
+    "table"=>"slowcontrolreadings",
+    "color"=>"purple",
+  ),
 );
