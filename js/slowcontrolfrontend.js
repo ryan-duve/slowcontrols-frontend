@@ -8,7 +8,7 @@ $(function() {
   $("#slider").slider({
     min:2,
     max:90,
-    value:20,
+    value:5,
     slide:function(event,ui){
       $("#nData-preview-text").html(ui.value);
     },
