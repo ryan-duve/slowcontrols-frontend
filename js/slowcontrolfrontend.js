@@ -243,6 +243,11 @@ function poll() {
     $('<div/>',{
       id:'statusbox-'+dev,
       class:'statusbox'
+    }).click(function(e) {
+      //make clicking status box toggle child checkbox
+      //http://stackoverflow.com/questions/15165821/jquery-set-div-to-toggle-checkbox-breaks-clicking-the-checkbox-itself#15165867
+      var $chkb = $(':checkbox', this)[0];
+      if(e.target !== $chkb) $chkb.checked = !$chkb.checked; 
     }).appendTo('#statusboxlist');
 
     //checkbox
