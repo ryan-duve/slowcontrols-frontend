@@ -115,3 +115,15 @@ input[type=checkbox] {
   display:inline;
   margin-left:20px;
 }
+
+#autoscaleybox{
+  text-align:right;
+}
+
+.inline-fields label{
+  display:inline-block;
+}
+
+.inline-fields label input{
+  width:60%;
+}

@@ -70,7 +70,7 @@ function poll() {
 	//function for when report comes in
 	function onReportReceived(report){
     //debug
-    console.log(report);
+    //console.log(report);
 
 		//check report for errors
 		handleReportErrors(report);
@@ -141,16 +141,19 @@ function poll() {
     //make status boxes if they do not exists
     updateStatusBoxes(report);
 
+    //get yaxisrange from autoscale radio box setting
+    yaxisrange=returnYAxisRange();
+
     //plot time
     plotTime=$("#nData-value").val();
 
     //enable slider
     $("#slider").slider("option","disabled",false);
-    
 
 		//plot it all!
-		$.plot($("#placeholder"),flot_data, {
-				yaxis: {},
+    //set to variable 'plot' so we can get axes for future autoscaley=off
+		plot=$.plot($("#placeholder"),flot_data, {
+				yaxis: yaxisrange,
 				xaxis: {
 								mode: "time",
 								timezone: "browser",
@@ -158,10 +161,14 @@ function poll() {
 								min: Date.now()-plotTime*60*1000,//hours*minutes*seconds * 1000 milliseconds/second
 								max: Date.now()
 				},
+        "selection":{"mode":"y"},//selectionmode,
 				"lines": {"show": "true"},
 				"points": {"show": "true"},
 				"legend": {"position":"nw"}
 			});
+
+    //update yaxis min/max boxes
+    updateYAxisMinMaxBoxes(plot.getAxes());
 
   	//make ajax call for report
     setTimeout(callAjax,1000);
@@ -282,6 +289,90 @@ function poll() {
     }).appendTo('#lastreadingwrapper-'+dev);
 
   }
+  
+  //make autoscaley html
+  function makeAutoScaleYBox(){
+    //autoscaleybox
+    $('<div/>',{
+      id:'autoscaleybox',
+      class:'statusbox'
+    }).appendTo('#statusboxlist');
+
+    $('<p>',{
+      text:"AutoScaleY"
+    }).appendTo('#autoscaleybox');
+
+    //the on label
+    $('<label />',{
+      text:'On',
+      id:'autoscaleyon',
+      class:'radio',
+    }).appendTo('#autoscaleybox');
+    //the on button
+    $('<input>',{
+      type:'radio',
+      value:'on',
+      name:'autoScaleYRadioButton',
+      checked:true,
+    }).appendTo('#autoscaleyon');
+
+    //the off label
+    $('<label />',{
+      text:'Off',
+      id:'autoscaleyoff',
+      class:'radio',
+    }).appendTo('#autoscaleybox');
+    //the off button
+    $('<input>',{
+      type:'radio',
+      value:'off',
+      name:'autoScaleYRadioButton',
+    }).appendTo('#autoscaleyoff');
+
+    //on change of max/min toggles, enable/disable inputs
+    $("input:radio").change(function(){
+      $("#autoscaleybox :input[type=text]").each(function(){
+        console.log($(this).attr("id"));
+        $(this).prop("disabled",!$(this).prop("disabled"));
+      });
+    });
+
+    //min/max labels div
+    $('<div/>',{
+      id:'yaxisminmax',
+      class:'inline-fields',
+    }).appendTo('#autoscaleybox');
+
+    //the max label
+    $('<label />',{
+      text:'Max: ',
+      id:'yaxismax',
+      class:'text',
+    }).appendTo('#yaxisminmax');
+    //the max text 
+    $('<input>',{
+      type:'text',
+      value:'',
+      id:'yaxisinputmax',
+      disabled:"true",
+    }).appendTo('#yaxismax');
+
+    //the min label
+    $('<label />',{
+      text:'Min: ',
+      id:'yaxismin',
+      class:'text',
+    }).appendTo('#yaxisminmax');
+    //the min text 
+    $('<input>',{
+      type:'text',
+      value:'',
+      id:'yaxisinputmin',
+      disabled:"true",
+    }).appendTo('#yaxismin');
+
+
+  }
 
   function updateStatusBoxes(report){
     //get device names
@@ -326,10 +417,44 @@ function poll() {
 
     }
 
+    //create autoscaley box (if doesn't exist)
+    if($("#autoscaleybox").length==0){
+      makeAutoScaleYBox();
+    }
+
     //update status boxes
     for(var dev in deviceReadings){
       //update last data point in status box
       updateStatusBox(dev,deviceReadings[dev]);
+    }
+  }
+
+  //update yaxis min/max boxes and return yaxisrange for plot
+  function returnYAxisRange(){
+
+    //check yaxis autoscale feature on/off
+    autoscaleychecked=$("input:radio[name=autoScaleYRadioButton]:checked").val();
+
+    //if autoscale, let flot figure out range, otherwise specify min/max
+    if(autoscaleychecked=='on'){
+      return yaxisrange={}; //empty set means autoscale
+    }else{
+      var ymin=$('#yaxisinputmin').val();
+      var ymax=$('#yaxisinputmax').val();
+      return yaxisrange={min:ymin,max:ymax};
+    }
+
+  }
+
+  function updateYAxisMinMaxBoxes(axes){
+    var ymin=axes.yaxis.min;
+    var ymax=axes.yaxis.max;
+
+    //only if autorange is on
+    autoscaleychecked=$("input:radio[name=autoScaleYRadioButton]:checked").val();
+    if(autoscaleychecked==='on'){
+      $('#yaxisinputmin').val(ymin);
+      $('#yaxisinputmax').val(ymax);
     }
   }
 
@@ -338,7 +463,7 @@ function poll() {
     $("#lastreading-"+dev).text(reading);
   }
 
-  console.log(JSON.stringify(getReportParams()));
+  //console.log(JSON.stringify(getReportParams()));
 
 	//make initial ajax call for report
   callAjax();
