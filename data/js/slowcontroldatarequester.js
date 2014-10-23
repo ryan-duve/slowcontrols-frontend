@@ -1,6 +1,5 @@
 $(function (){
   //onload
-
   //populate time fields
   populateTimeFields();
 
@@ -30,14 +29,12 @@ function submitDataRequest(){
   differenceInSeconds=endTimestamp.diff(begTimestamp,'seconds');
   nData=Math.ceil(differenceInSeconds/60); //60 seconds/min
 
-  console.log('nData='+nData);
-
   //get device
   dev=$("input:radio[name=devNameRadioButton]:checked").val();
 
   //format endTimestamp
   endTimestamp=$('#endTime').val();
-  console.log('sending endTimestamp='+endTimestamp);
+  //console.log('sending endTimestamp='+endTimestamp);
 
   $.ajax({
     url:"../getReport.php",
