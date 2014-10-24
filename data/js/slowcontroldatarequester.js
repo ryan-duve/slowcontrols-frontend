@@ -14,6 +14,7 @@ $(function (){
   //bind form submission
   $("#submit").on('click',function(event){
     event.preventDefault();
+    $('.graph-container').show();
     submitDataRequest();
   });
 
