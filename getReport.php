@@ -13,6 +13,9 @@ function getIncomingData(){
 //START PROGRAM
 //******************************************************************************
 
+//oyvey
+ini_set('memory_limit', '2048M');
+
 //simulate incoming data
 $incomingData=getIncomingData();
 
