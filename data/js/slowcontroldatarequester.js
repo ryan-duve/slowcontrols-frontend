@@ -68,11 +68,9 @@ function populateTimeFields(){
 
 function onDeviceNamesReceived(devNames){
   makeRadioListFromDevNames(devNames);
-
-  $("input:radio[name=devNameRadioButton]:first").attr('checked', true);
 }
 
-//makes radio list of devices
+//makes select list of devices
 function makeRadioListFromDevNames(devNames){
   $('<select>',{
     id:"devSelect" 
