@@ -30,7 +30,7 @@ function submitDataRequest(){
   nData=Math.ceil(differenceInSeconds/60); //60 seconds/min
 
   //get device
-  dev=$("input:radio[name=devNameRadioButton]:checked").val();
+  dev=$("select option:selected").text();
 
   //format endTimestamp
   endTimestamp=$('#endTime').val();
@@ -74,18 +74,16 @@ function onDeviceNamesReceived(devNames){
 
 //makes radio list of devices
 function makeRadioListFromDevNames(devNames){
-  devNames.forEach(function(dev){
-    //the label
-    $('<label />',{
-    text:dev,
-    id:'devNameLabel-'+dev,
-    class:'radio',
-    }).appendTo('#devNameSelectionWrapper');
+  $('<select>',{
+    id:"devSelect" 
+  })
+    .addClass('form-control')
+    .appendTo('#devNameSelectionWrapper');
 
-    $('<input>',{
-      type:'radio',
+  devNames.forEach(function(dev){
+    $('<option>',{
       value:dev,
-      name:'devNameRadioButton',
-    }).appendTo('#devNameLabel-'+dev);
+      text:dev,
+    }).appendTo('#devSelect');
   });
 }
