@@ -61,20 +61,24 @@ $('#placeholder').bind("plotselected", function (event, ranges) {
 
 	//plot it all!
 	var plot=$.plot($("#placeholder"),flot_data, {
-			yaxis: {},
+			yaxis: {
+      },
 			xaxis: {
 							mode: "time",
 							timezone: "browser",
 							timeformat:"%h:%M:%S",
 							min: plotMin,
-							max: plotMax
+							max: plotMax,
 			},
 			"lines": {"show": "true"},
-			//"points": {"show": "true"},
+			"points": {"show": "true"},
 			"legend": {"position":"nw"},
-      "selection":{
-        "mode":"xy"
-      }
+      "zoom":{
+        "interactive":true
+      },
+      "pan":{
+        "interactive":true
+      },
 		});
 }
 
