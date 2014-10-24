@@ -36,12 +36,6 @@ function onReportReceived(report){
   //make flot data array out of report
   flot_data = constructFlotDataFromReport(report);
 
-  //plot time
-  begTimestamp=moment($('#begTime').val());
-  endTimestamp=moment($('#endTime').val());
-  plotMin=begTimestamp.valueOf();
-  plotMax=endTimestamp.valueOf();
-
   //zoom!
 $('#placeholder').bind("plotselected", function (event, ranges) {
   $.each(plot.getXAxes(), function(_, axis) {
@@ -67,8 +61,6 @@ $('#placeholder').bind("plotselected", function (event, ranges) {
 							mode: "time",
 							timezone: "browser",
 							timeformat:"%h:%M:%S",
-							min: plotMin,
-							max: plotMax,
 			},
 			"lines": {"show": "true"},
 			"points": {"show": "true"},
