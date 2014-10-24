@@ -34,24 +34,28 @@ function onReportReceived(report){
 	handleReportErrors(report);
 
   //make flot data array out of report
-  flot_data = constructFlotDataFromReport(report);
+  var flot_data = constructFlotDataFromReport(report);
 
-  //zoom!
-$('#placeholder').bind("plotselected", function (event, ranges) {
-  $.each(plot.getXAxes(), function(_, axis) {
-    var opts = axis.options;
-    opts.min = ranges.xaxis.from;
-    opts.max = ranges.xaxis.to;
+  //prune data
+  pruned_flot_data=pruneData(flot_data);
+
+
+  //bind zoom!
+  $('#placeholder').bind("plotselected", function (event, ranges) {
+    $.each(plot.getXAxes(), function(_, axis) {
+      var opts = axis.options;
+      opts.min = ranges.xaxis.from;
+      opts.max = ranges.xaxis.to;
+    });
+    $.each(plot.getYAxes(), function(_, axis) {
+      var opts = axis.options;
+      opts.min = ranges.yaxis.from;
+      opts.max = ranges.yaxis.to;
+    });
+    plot.setupGrid();
+    plot.draw();
+    plot.clearSelection();
   });
-  $.each(plot.getYAxes(), function(_, axis) {
-    var opts = axis.options;
-    opts.min = ranges.yaxis.from;
-    opts.max = ranges.yaxis.to;
-  });
-  plot.setupGrid();
-  plot.draw();
-  plot.clearSelection();
-});
 
 	//plot it all!
 	var plot=$.plot($("#placeholder"),flot_data, {
@@ -60,7 +64,7 @@ $('#placeholder').bind("plotselected", function (event, ranges) {
 			xaxis: {
 							mode: "time",
 							timezone: "browser",
-							timeformat:"%h:%M:%S",
+							timeformat:"%m/%d<br> %h:%M:%S",
 			},
 			"lines": {"show": "true"},
 			"points": {"show": "true"},
@@ -120,9 +124,34 @@ function constructFlotDataFromReport(report){
 
     //pack JSON object into array (necessary for flot)
     flot_data.push(flot_data_object);
-
   }
 
   //console.log(JSON.stringify(flot_data));
   return flot_data;
+}
+
+function pruneData(flot_data_object){
+  //loop over all devices
+  console.log(flot_data_object);
+  for (var dev=0;dev<flot_data_object.length;dev++){
+    var flot_data_array=flot_data_object[dev]["data"];
+
+    //get number of pixels
+    var pixels=$('#placeholder').width();
+
+    //prune!
+    //halve number of entries while pixels<points
+    while(flot_data_array.length>pixels){
+      for(var i=flot_data_array.length-1;i>=0;i=i-2){
+        flot_data_array.splice(i,1);
+      }
+    }
+    
+    //set pruned data to flot_data_object
+    flot_data_object[dev]["data"]=flot_data_array;
+  }
+
+  //returned modified flot_data_object
+  return flot_data_object;
+
 }
