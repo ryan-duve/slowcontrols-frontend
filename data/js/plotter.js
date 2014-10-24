@@ -42,8 +42,25 @@ function onReportReceived(report){
   plotMin=begTimestamp.valueOf();
   plotMax=endTimestamp.valueOf();
 
+  //zoom!
+$('#placeholder').bind("plotselected", function (event, ranges) {
+  $.each(plot.getXAxes(), function(_, axis) {
+    var opts = axis.options;
+    opts.min = ranges.xaxis.from;
+    opts.max = ranges.xaxis.to;
+  });
+  $.each(plot.getYAxes(), function(_, axis) {
+    var opts = axis.options;
+    opts.min = ranges.yaxis.from;
+    opts.max = ranges.yaxis.to;
+  });
+  plot.setupGrid();
+  plot.draw();
+  plot.clearSelection();
+});
+
 	//plot it all!
-	$.plot($("#placeholder"),flot_data, {
+	var plot=$.plot($("#placeholder"),flot_data, {
 			yaxis: {},
 			xaxis: {
 							mode: "time",
@@ -54,7 +71,10 @@ function onReportReceived(report){
 			},
 			"lines": {"show": "true"},
 			//"points": {"show": "true"},
-			"legend": {"position":"nw"}
+			"legend": {"position":"nw"},
+      "selection":{
+        "mode":"xy"
+      }
 		});
 }
 
