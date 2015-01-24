@@ -11,11 +11,17 @@ $KNOWN_DEVICES=array(
     "table"=>"slowcontrolreadings",
     "color"=>"red",
   ),
-  "sepSi"=>array(
-    "displayName"=>"Sep Si",
+  "sepSiLo"=>array(
+    "displayName"=>"Sep Lo",
     "units"=>"K",
     "table"=>"slowcontrolreadings",
     "color"=>"orange",
+  ),
+  "sepSiHi"=>array(
+    "displayName"=>"Sep Hi",
+    "units"=>"K",
+    "table"=>"slowcontrolreadings",
+    "color"=>"gray",
   ),
   "mcSi"=>array(
     "displayName"=>"MC Si",
