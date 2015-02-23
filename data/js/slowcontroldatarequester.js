@@ -30,9 +30,11 @@ function submitDataRequest(){
   differenceInSeconds=endTimestamp.diff(begTimestamp,'seconds');
   nData=Math.ceil(differenceInSeconds/60); //60 seconds/min
 
-  //get device
-  dev=$("select option:selected").text();
-  console.log(dev);
+  //get devices
+  var devs= $('input[name=checkboxlist]:checked').map(function() {
+        return $(this).parent().text();
+      }).get();
+  console.log(devs);
 
   //format endTimestamp
   endTimestamp=$('#endTime').val();
@@ -41,17 +43,16 @@ function submitDataRequest(){
   $.ajax({
     url:"../getReport.php",
     type:"POST",
-    data:getReportParams(nData,dev,endTimestamp),
+    data:getReportParams(nData,devs,endTimestamp),
     dataType:"json",
     success: onReportReceived
   }); 
 
 }
 
-function getReportParams(nData,dev,endTimestamp){
+function getReportParams(nData,devs,endTimestamp){
   var reportparams={};
-  reportparams['incomingDevs']=[];
-  reportparams['incomingDevs'].push(dev);
+  reportparams['incomingDevs']=devs;
   reportparams['nData']=nData;
   reportparams['endTimestamp']=endTimestamp;
   return reportparams;
@@ -93,6 +94,7 @@ function makeRadioListFromDevNames(devNames){
     $('<input />',{
       type:'checkbox',
       value:dev,
+      name:'checkboxlist',
       id:'dev'+dev,
     }).appendTo(label);
 
