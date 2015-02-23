@@ -32,6 +32,7 @@ function submitDataRequest(){
 
   //get device
   dev=$("select option:selected").text();
+  console.log(dev);
 
   //format endTimestamp
   endTimestamp=$('#endTime').val();
@@ -73,16 +74,32 @@ function onDeviceNamesReceived(devNames){
 
 //makes select list of devices
 function makeRadioListFromDevNames(devNames){
-  $('<select>',{
-    id:"devSelect" 
-  })
-    .addClass('form-control')
-    .appendTo('#devNameSelectionWrapper');
+ // $('<input>',{
+ //   type:checkbox,
+ //   id:"devSelect" 
+ // })
+ //   .addClass('form-control')
+ //   .appendTo('#devNameSelectionWrapper');
 
   devNames.forEach(function(dev){
-    $('<option>',{
+    var label=$('<label />',{
+      "css":{
+        'display':'inline-block',
+        'margin':'10px',
+      }
+    })
+      .appendTo('#devNameSelectionWrapper');
+
+    $('<input />',{
+      type:'checkbox',
       value:dev,
-      text:dev,
-    }).appendTo('#devSelect');
+      id:'dev'+dev,
+    }).appendTo(label);
+
+    $('<span/>',{
+      'text':dev,
+    }).appendTo(label);
+
+
   });
 }

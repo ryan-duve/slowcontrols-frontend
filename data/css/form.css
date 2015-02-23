@@ -28,7 +28,7 @@ body {
 }*/
 
 .form-data {
-  width:300px;
+  width:500px;
   padding: 15px;
 }
 .form-data .form-data-heading,
@@ -52,4 +52,10 @@ body {
 }
 .graph-container{
   display:none;
+}
+
+#devNameSelectionWrapper label{
+  border-style:solid;
+  border-radius:2px;
+  padding:3px;
 }
