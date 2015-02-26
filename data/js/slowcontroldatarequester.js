@@ -70,18 +70,11 @@ function populateTimeFields(){
 }
 
 function onDeviceNamesReceived(devNames){
-  makeRadioListFromDevNames(devNames);
+  makeListFromDevNames(devNames);
 }
 
 //makes select list of devices
-function makeRadioListFromDevNames(devNames){
- // $('<input>',{
- //   type:checkbox,
- //   id:"devSelect" 
- // })
- //   .addClass('form-control')
- //   .appendTo('#devNameSelectionWrapper');
-
+function makeListFromDevNames(devNames){
   devNames.forEach(function(dev){
     var label=$('<label />',{
       "css":{
