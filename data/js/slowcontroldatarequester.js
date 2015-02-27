@@ -26,15 +26,23 @@ function submitDataRequest(){
   begTimestamp=moment($('#begTime').val());
   endTimestamp=moment($('#endTime').val());
 
-  //nData is difference in minutes
   differenceInSeconds=endTimestamp.diff(begTimestamp,'seconds');
+
+  //if the beginning time is later than the end time
+  if(differenceInSeconds < 0){
+    flipTimes();
+    //multiply by negative 1 to reflect the timestamp flip
+    differenceInSeconds=differenceInSeconds*-1;
+  }
+
+  //nData is difference in minutes
   nData=Math.ceil(differenceInSeconds/60); //60 seconds/min
 
   //get devices
   var devs= $('input[name=checkboxlist]:checked').map(function() {
         return $(this).parent().text();
       }).get();
-  console.log(devs);
+  //console.log(devs);
 
   //format endTimestamp
   endTimestamp=$('#endTime').val();
@@ -48,6 +56,13 @@ function submitDataRequest(){
     success: onReportReceived
   }); 
 
+}
+
+//flipTimes switches the values of the input boxes
+function flipTimes(){
+  var temp=$('#begTime').val();
+  $('#begTime').val($('#endTime').val());
+  $('#endTime').val(temp);
 }
 
 function getReportParams(nData,devs,endTimestamp){
