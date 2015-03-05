@@ -32,13 +32,13 @@ $KNOWN_DEVICES=array(
   "OVCPressure"=>array(
     "displayName"=>"OVC",
     "units"=>"mbar",
-    "table"=>"slowcontrolreadings",
+    "table"=>"alcatelasm120h",
     "color"=>"red",
   ),
   "IVCPressure"=>array(
     "displayName"=>"IVC",
     "units"=>"mbar",
-    "table"=>"slowcontrolreadings",
+    "table"=>"alcatelasm120h",
     "color"=>"gold",
   ),
   "he3Pressure"=>array(
