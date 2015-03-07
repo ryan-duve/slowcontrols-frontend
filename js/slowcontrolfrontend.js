@@ -389,8 +389,8 @@ function poll() {
       }else{
         //set lastreading to newest data point value
         lastreading=report.devices[dev]["data"][0]["measurement_reading"];
-        //format to 2 decimal points
-        lastreading=parseFloat(lastreading).toFixed(2);
+        //format last point (either 2 decimal points or scientific notation)
+        lastreading=formatLastReading(lastreading);
         deviceReadings[dev]=lastreading;
       }
     }
@@ -427,6 +427,20 @@ function poll() {
       //update last data point in status box
       updateStatusBox(dev,deviceReadings[dev]);
     }
+  }
+ 
+  //takes data point (124.2, 0.0000002345, etc) and formats for statusbox
+  function formatLastReading(lastreading){
+    var formattedLastReading=null;
+    
+    if(lastreading>=0.01){
+      //format to 2 decimal points
+      formattedLastReading=parseFloat(lastreading).toFixed(2);
+    }else{
+      //format to scientific notation
+      formattedLastReading=parseFloat(lastreading).toExponential(2);
+    }
+    return formattedLastReading;
   }
 
   //update yaxis min/max boxes and return yaxisrange for plot
