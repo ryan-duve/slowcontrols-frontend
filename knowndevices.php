@@ -97,8 +97,15 @@ $KNOWN_DEVICES=array(
   ),
   "avs47"=>array(
     "displayName"=>"AVS47",
-    "units"=>"Ω",
+    //"units"=>"Ω",
+    "units"=>"K",
     "table"=>"slowcontrolreadings",
     "color"=>"purple",
+  ),
+  "sepSi"=>array(
+    "displayName"=>"sepsi",
+    "units"=>"K",
+    "table"=>"slowcontrolreadings",
+    "color"=>"black",
   ),
 );
