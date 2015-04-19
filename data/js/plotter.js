@@ -28,7 +28,7 @@ function blinkDOM(element){
 //function for when report comes in
 function onReportReceived(report){
   //debug
-  console.log(report);
+  //console.log(report);
 
 	//check report for errors
 	handleReportErrors(report);
@@ -132,7 +132,7 @@ function constructFlotDataFromReport(report){
 
 function pruneData(flot_data_object){
   //loop over all devices
-  console.log(flot_data_object);
+  //console.log(flot_data_object);
   for (var dev=0;dev<flot_data_object.length;dev++){
     var flot_data_array=flot_data_object[dev]["data"];
 
