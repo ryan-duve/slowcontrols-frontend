@@ -15,6 +15,7 @@ $(function (){
   $("#submit").on('click',function(event){
     event.preventDefault();
     $('.graph-container').show();
+    $("#submit").button('loading');
     submitDataRequest();
   });
 

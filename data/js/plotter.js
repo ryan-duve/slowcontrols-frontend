@@ -76,6 +76,9 @@ function onReportReceived(report){
         "interactive":true
       },
 		});
+
+  //reset submit button
+  $("#submit").button('reset');
 }
 
 function constructFlotDataFromReport(report){
