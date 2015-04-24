@@ -12,7 +12,9 @@ $(function (){
   });
 
   //bind form submission
-  $("#submit").on('click',function(event){
+  $("#submit")
+    .button('reset')//reset the button just in case page reloaded
+    .on('click',function(event){
     event.preventDefault();
     $('.graph-container').show();
     $("#submit").button('loading');
