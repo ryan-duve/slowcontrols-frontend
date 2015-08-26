@@ -12,6 +12,7 @@
 class SlowControlReporter{
 
   protected $nData=0;
+  protected $begTimestamp=0;
   protected $endTimestamp=0;
   protected $queryResponse=[];
   protected $report=[];
@@ -28,6 +29,10 @@ class SlowControlReporter{
 
   public function getDeviceList(){
     return array_keys($this->report["devices"]);
+  }
+
+  public function getBegTimestamp(){
+    return $this->begTimestamp;
   }
 
   public function getEndTimestamp(){
@@ -72,6 +77,10 @@ class SlowControlReporter{
     }
   }
 
+  public function setBegTimestamp($begTimestamp){
+    $this->begTimestamp=$begTimestamp;
+  }
+
   public function setEndTimestamp($endTimestamp){
     $this->endTimestamp=$endTimestamp;
   }
@@ -106,20 +115,17 @@ class SlowControlReporter{
     //return nice JSON object
   }
 
-  public function sanitizeEndTimestamp($endTimestamp){
-    //check if endTimestamp is in MySQL format, else return false
+  public function sanitizeTimestamp($timestamp){
+    //check if timestamp is in MySQL format, else return false
     //http://stackoverflow.com/questions/11510338/regular-expression-to-match-mysql-timestamp-format-y-m-d-hms#12025632
     $regex="/^(((\d{4})(-)(0[13578]|10|12)(-)(0[1-9]|[12][0-9]|3[01]))|((\d{4})(-)(0[469]|11)(-)([0][1-9]|[12][0-9]|30))|((\d{4})(-)(02)(-)(0[1-9]|1[0-9]|2[0-8]))|(([02468][048]00)(-)(02)(-)(29))|(([13579][26]00)(-)(02)(-)(29))|(([0-9][0-9][0][48])(-)(02)(-)(29))|(([0-9][0-9][2468][048])(-)(02)(-)(29))|(([0-9][0-9][13579][26])(-)(02)(-)(29)))(\s([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]))$/";
 
     try{
-      if(preg_match($regex,$endTimestamp)){
+      if(preg_match($regex,$timestamp)){
         //if timestamp matches mysql
-        return $endTimestamp;
-      }else if($endTimestamp=="now"){
-        //if timestamp is "now", return current timestamp (MySQL format)
-        return date('Y-m-d H:i:s');
+        return $timestamp;
       }else{
-        throw new Exception ("endTimestamp not 'now' or MySQL valid (endTimestamp=$endTimestamp)");
+        throw new Exception ("timestamp not 'now' or MySQL valid (timestamp=$timestamp)");
       }
     }catch(Exception $e){
       $this->processException($e);
@@ -203,8 +209,8 @@ class SlowControlReporter{
       //format report date to JS time ("2014-09-08 08:53:18" to 1410180798000)
       for($i=0;$i<count($res);$i++){
         $mysqlTimestamp=$res[$i]['created_at'];
-        $unixTimestamp=$this->convertMysqlToJSTimestamp($mysqlTimestamp);
-        $res[$i]['created_at']=$unixTimestamp;
+        $JSTimestamp=$this->convertMysqlToJSTimestamp($mysqlTimestamp);
+        $res[$i]['created_at']=$JSTimestamp;
       }
 
       //attach data to report
@@ -213,6 +219,7 @@ class SlowControlReporter{
   }
 
   public function convertMysqlToJSTimestamp($mysqlTimestamp){
+    //strtotime returns UNIX timestamp	
     return strtotime($mysqlTimestamp)*1000;
   }
 
@@ -223,25 +230,22 @@ class SlowControlReporter{
     //query database
     //STH="statement handler"
     $table=$this->getTableForDevice($dev);
-		$lim=$this->getNData();
+		$begTimestamp=$this->getBegTimestamp();
 		$endTimestamp=$this->getEndTimestamp();
 
     //$this->fakeError(var_export(debug_backtrace(),true));
 
-    $prepQuery="SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN DATE_SUB(\"$endTimestamp\",INTERVAL :lim MINUTE) AND \"$endTimestamp\") ORDER BY id DESC";
+    $prepQuery="SELECT measurement_reading, created_at FROM $table WHERE device=:dev AND (created_at BETWEEN \"$begTimestamp\" AND \"$endTimestamp\") ORDER BY id DESC";
 
     $STH=$this->DBH->prepare($prepQuery);
 
     $params=[];
     $params['dev']=$dev;
-    $params['lim']=$lim;
 
     //$this->fakeError($this->interpolateQuery($prepQuery,$params));
 
 		//temporary query!  Uses last few entries instead of time since we are not writing to Hifrost.org yet
-    //$STH=$this->DBH->prepare("SELECT measurement_reading, created_at FROM $table WHERE device=:dev  ORDER BY id DESC LIMIT :lim");
     $STH->bindParam(':dev',$dev,PDO::PARAM_STR);
-    $STH->bindParam(':lim',$lim,PDO::PARAM_INT);
 
     //execute statement
     try{
