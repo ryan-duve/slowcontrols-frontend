@@ -28,7 +28,7 @@ function blinkDOM(element){
 //function for when report comes in
 function onReportReceived(report){
   //debug
-  //console.log(report);
+  console.log(report);
 
 	//check report for errors
 	handleReportErrors(report);
