@@ -47,14 +47,14 @@ function submitDataRequest(){
       }).get();
   //console.log(devs);
 
-  //format endTimestamp
+  //format timestamps
   endTimestamp=$('#endTime').val();
-  //console.log('sending endTimestamp='+endTimestamp);
+  begTimestamp=$('#begTime').val();
 
   $.ajax({
     url:"../getReport.php",
     type:"POST",
-    data:getReportParams(nData,devs,endTimestamp),
+    data:getReportParams(nData,devs,begTimestamp,endTimestamp),
     dataType:"json",
     success: onReportReceived
   }); 
@@ -68,10 +68,11 @@ function flipTimes(){
   $('#endTime').val(temp);
 }
 
-function getReportParams(nData,devs,endTimestamp){
+function getReportParams(nData,devs,begTimestamp,endTimestamp){
   var reportparams={};
   reportparams['incomingDevs']=devs;
   reportparams['nData']=nData;
+  reportparams['begTimestamp']=begTimestamp;
   reportparams['endTimestamp']=endTimestamp;
   return reportparams;
 }
