@@ -482,3 +482,13 @@ function poll() {
 	//make initial ajax call for report
   callAjax();
 }
+
+//return the current time minus nMinutes minutes
+function NMinutesAgo(nMinutes){
+  return moment()
+    .subtract(
+        $("#nData-value").val(),
+        'minutes'
+        )
+    .format("YYYY-MM-DD HH:mm:ss");
+}
