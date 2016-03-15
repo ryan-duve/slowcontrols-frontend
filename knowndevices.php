@@ -168,4 +168,10 @@ $KNOWN_DEVICES=array(
     "table"=>"slowcontrolreadings",
     "color"=>"purple",
   ),
+  "OVCSi"=>array(
+    "displayName"=>"OVC Si",
+    "units"=>"K",
+    "table"=>"slowcontrolreadings",
+    "color"=>"purple",
+  ),
 );
